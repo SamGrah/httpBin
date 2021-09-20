@@ -1,0 +1,7 @@
+extends nav 
+
+block main
+  p Bin #{binId} has been created
+  |  
+  a(href=`/view-bin/${binId}`) 
+    button.bg-green-200(class="hover:bg-green-400") View Bin Requests

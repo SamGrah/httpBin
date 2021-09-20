@@ -1,0 +1,15 @@
+extends nav
+
+block main
+  h2
+    span Inspect HTTP Requests
+  h3.banner-subheader
+    | This is a clone of the 
+    a(href='https://requestbin.net') RequestBin
+    |  tool.
+    br
+    |           RequestBin gives you a URL that will collect requests made to it and let you inspect them in a human-friendly way.
+    br
+    |           Use RequestBin to see what your HTTP client is sending or to inspect and debug webhook requests.
+  a(href="/newbin") 
+    button.bg-green-200(class="hover:bg-green-400") Create a RequestBin
