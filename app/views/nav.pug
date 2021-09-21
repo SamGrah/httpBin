@@ -11,7 +11,7 @@ head
   </header>
 // This example requires Tailwind CSS v2.0+
 .flex.flex-col.h-screen
-  nav(style='background-color: #21CEAB;')
+  nav.fixed.w-screen(style='background-color: #21CEAB;')
     .max-w-10xl.mx-auto.px-2.px-8
       .relative.flex.items-center.justify-between.h-16
         .absolute.inset-y-0.left-0.flex.items-center
@@ -25,5 +25,5 @@ head
             .span12
               a(href='https://github.com/SamGrah/requestbin.git')
                 i.fab.fa-github.fa-2x(style='color: #21CEAB;' class="hover:opacity-80")
-  main.flex-1.overflow-y-auto.py-5
+  main.mt-16.py-5.flex.justify-center
     block main

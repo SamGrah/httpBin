@@ -1,2 +1,4 @@
 node_modules
 .gitcredentials
+.vscode
+.DS_Store

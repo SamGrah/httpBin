@@ -7,15 +7,17 @@ requestLogRouter.all("/:id", async (req, res) => {
     res.end()
   }
 
-  console.log(req.ip)
+  let body = req.body
+  if (req.body.payload) body = JSON.parse(req.body.payload)
+  
   const recievedRequest = {
       originalUrl: req.originalUrl,
       baseUrl: req.baseUrl,
       path: req.path,
       requestType: req.method,
       headers: req.headers,
-      body: req.body,
-      senderIP: req.ip
+      body: body,
+      senderIP: req.headers['x-forwarded-for']
   };
 
   await requestRecords.findOneAndUpdate(

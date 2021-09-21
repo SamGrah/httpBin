@@ -4,12 +4,12 @@ block main
   if requests.length !== 0
     ul
       each request, idx in requests
-        li.m-6.grid.grid-cols-3.justify-evenly.border-2.border-gray-300
-            div.p-2.bg-gray-100(style='white-space:pre;')
+        li.m-6.grid.grid-cols-3.border-2.border-gray-300
+            div.p-2.bg-gray-100(style="white-space:pre;")
               |  https://#{request.headers.host}
               |  #[b #{request.requestType}] #{request.originalUrl}
             div.p-2.bg-gray-100 #{request.headers['content-type']}
-            div.p-2.bg-gray-100.text-right(style='white-space:pre;')
+            div.p-2.text-right.bg-gray-100(style='white-space:pre;')
               - const msDifference = Date.now() - request._id.getTimestamp()
               - const minsDifference = Math.floor(msDifference/ (1000 * 60))
               | #{minsDifference} mins ago
@@ -19,26 +19,27 @@ block main
               | 
               ul
                 each value, key in request.body
-                  li.overflow-y-auto #[b #{key}]: #{value}
+                  li.whitespace-normal.break-all #[b #{key}]: #{value}
                 else 
                   li None
             div.p-2.col-span-2(style='white-space:pre;')
               span.font-bold.text-gray-500 HEADERS 
               ul
                 each value, key in request.headers
-                  li.overflow-y-auto #[b #{key}]: #{value}
+                  li.whitespace-normal.break-all #[b #{key}]: #{value}
                 else 
                   li None  
             div.p-2.col-span-3(style='white-space:pre;')
               span.font-bold.text-gray-500 RAW BODY  
               if Object.entries(request.body).length !== 0
-                |
-                |#{JSON.stringify(request.body)} 
+                .whitespace-normal.break-all
+                  |
+                  |#{JSON.stringify(request.body)} 
               else
                 | 
                 | None
   else
-    div.flex.justify-center
+    div
       .max-w-md.py-4.px-8.bg-white.shadow-lg.rounded-lg.my-20
         div
           h2.text-gray-800.text-3xl.font-semibold Bin #{bin} is Empty
@@ -46,4 +47,4 @@ block main
             | No HTTP requests have been recieved by bin #{bin}. 
             | A request of any type (#[i GET], #[i DELETE], etc) can be added to this bin by making a request to the following address.
         .flex.justify-center.mt-4.mb-3
-          a.text-xl.font-medium.text-indigo-500(href=`/bin/${bin}`) samgraham.dev/bin/#{bin}
+          a.text-xl.font-medium.text-indigo-500(href=`/bin/${bin}`) samgraham.dev/reqbin/bin/#{bin}

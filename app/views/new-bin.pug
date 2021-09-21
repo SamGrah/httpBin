@@ -1,7 +1,111 @@
 extends nav 
 
 block main
-  p Bin #{binId} has been created
-  |  
-  a(href=`/view-bin/${binId}`) 
-    button.bg-green-200(class="hover:bg-green-400") View Bin Requests
+  .m-11.grid.grid-cols-1.gap-1.self-center(class="w-1/2")
+    p.mb-4.text-center.font-bold.text-3xl Bin #[i #{binId}] Has Been Created
+    div.mb-10.grid.grid-cols-2.divide-x.divide-gray-100
+      .p-4.w-full.rounded-md
+        p.mt-3.mb-1.text-center HTTP requests made to this endpoint will be logged
+        input.bg-green-50.border.border-gray.w-full.outline-none.text-gray-500.rounded-md.p-1.text-xl.text-center(value=`samgraham.dev/reqbin/bin/${binId}` disabled)
+      .p-4.w-full.rounded-md
+        p.mt-3.mb-1.text-center Visit this endpoint to review logged HTTP request data
+        input.bg-green-50.border.border-gray.w-full.outline-none.text-gray-500.rounded-md.p-1.text-xl.text-center(value=`samgraham.dev/reqbin/view-bin/${binId}` disabled)
+        //- a(href=`/view-bin/${binId}`) 
+        //-   button.flex-1.bg-green-200(class="hover:bg-green-400") View Bin Requests
+    p.text-center.font-bold.text-3xl Execute Requests With The Following Code
+    div.mt-4
+      | #[b cURL]
+      pre.p-2.mt-2.border-gray-300.border-2.whitespace-normal.break-all.bg-gray-100
+        code
+          | curl -X POST -d "fizz=buzz" samgraham.dev/reqbin/bin/#{binId}
+    div.mt-4
+      | #[b PowerShell]
+      pre.p-2.mt-2.border-gray-300.border-2.whitespace-pre-wrap.break-all.bg-gray-100
+        code
+          | powershell -NoLogo -Command "(New-Object System.Net.WebClient).DownloadFile('samgraham.dev/reqbin/bin/#{binId}', 'C:\Windows\Temp\ednze13v.txt')"
+    div.mt-4
+      | #[b Python (with Requests)]
+      pre.p-2.mt-2.border-gray-300.border-2.whitespace-pre-wrap.break-word.bg-gray-100
+        code
+          | import requests, time
+          | r = requests.post('samgraham.dev/reqbin/bin/#{binId}', data={"ts":time.time()})
+          | print r.status_code
+          | print r.content
+    div.mt-4
+      | #[b Node.js (with request)]
+      pre.p-2.mt-2.border-gray-300.border-2.whitespace-pre-wrap.break-word.bg-gray-100
+        code
+          | var request = require('request');
+          | var url ='samgraham.dev/reqbin/bin/#{binId}'
+          | request(url, function (error, response, body) {
+          |   if (!error) {
+          |     console.log(body);
+          |   }
+          | });
+    div.mt-4
+      | #[b Ruby]
+      pre.p-2.mt-2.border-gray-300.border-2.whitespace-pre-wrap.break-word.bg-gray-100
+        code
+          | require 'open-uri'
+          | result = open('samgraham.dev/reqbin/bin/#{binId}')
+          | result.lines { |f| f.each_line {|line| p line} }
+    div.mt-4
+      | #[b C# / .NET] 
+      pre.p-2.mt-2.border-gray-300.border-2.whitespace-pre-wrap.break-word.bg-gray-100
+        code
+          | using System;
+          | using System.Net.Http;
+          | using System.Threading.Tasks;
+          |
+          | namespace RequestBinExample
+          | {
+          |  class Program
+          |  {
+          |   static void Main(string[] args)
+          |   {
+          |    MakeRequest();
+          |   }
+          |
+          |   private static async Task MakeRequest()
+          |   {
+          |    var httpClient = new HttpClient();
+          |    var response = await httpClient.GetAsync(new Uri("samgraham.dev/reqbin/bin/#{binId}"));
+          |    var body = await response.Content.ReadAsStringAsync();
+          |    Console.WriteLine(body);
+          |  }
+          | }
+          |} 
+    div.mt-4
+      | #[b Java]
+      pre.p-2.mt-2.border-gray-300.border-2.whitespace-pre-wrap.break-word.bg-gray-100
+        code
+          | import org.apache.commons.httpclient.*;
+          | import org.apache.commons.httpclient.methods.*;
+          | import org.apache.commons.httpclient.params.HttpMethodParams;
+          |
+          | import java.io.*;
+          |
+          | public class RequestBinTutorial {
+          |  public static void main(String[] args) {
+          |    HttpClient client = new HttpClient();
+          |    GetMethod method = new GetMethod("samgraham.dev/reqbin/bin/#{binId}");
+          |    try {
+          |      int statusCode = client.executeMethod(method);
+          |      byte[] responseBody = method.getResponseBody();
+          |      System.out.println(new String(responseBody));
+          |    } catch (Exception e) {
+          |      System.err.println("Fatal error: " + e.getMessage());
+          |      e.printStackTrace();
+          |    } finally {
+          |      method.releaseConnection();
+          |    }
+          |  }
+          |}
+    div.mt-4
+      | #[b PHP]
+      pre.p-2.mt-2.border-gray-300.border-2.whitespace-pre-wrap.break-word.bg-gray-100
+        code
+          | &lt?php
+          |   $result = file_get_contents('samgraham.dev/reqbin/bin/#{binId}');
+          |   echo $result;
+          | ?/&gt
