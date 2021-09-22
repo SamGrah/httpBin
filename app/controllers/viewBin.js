@@ -15,5 +15,4 @@ viewBinRouter.get('/:binId', async (req, res) => {
   }
 })
 
-
 module.exports = viewBinRouter

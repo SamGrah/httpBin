@@ -4,15 +4,20 @@ block main
   if requests.length !== 0
     ul
       each request, idx in requests
+        - const msDifference = Date.now() - request._id.getTimestamp()
+        - const minsDifference = Math.floor(msDifference/ (1000 * 60))
+        - const hoursDifference = minsDifference / 60;
+        - const daysDifference = hoursDifference / 24;
+        - let elapsedTimeString = `${minsDifference} mins`
+        - if (hoursDifference >= 1) elapsedTimString = `${hoursDifference} hours`
+        - if (daysDifference >= 1) elapsedTimeString = `${daysDifference} days`
         li.m-6.grid.grid-cols-3.border-2.border-gray-300
             div.p-2.bg-gray-100(style="white-space:pre;")
               |  https://#{request.headers.host}
               |  #[b #{request.requestType}] #{request.originalUrl}
             div.p-2.bg-gray-100 #{request.headers['content-type']}
             div.p-2.text-right.bg-gray-100(style='white-space:pre;')
-              - const msDifference = Date.now() - request._id.getTimestamp()
-              - const minsDifference = Math.floor(msDifference/ (1000 * 60))
-              | #{minsDifference} mins ago
+              | #{elapsedTimeString} ago
               | #{request.senderIP}
             div.p-2(style='white-space:pre;')
               span.font-bold.text-gray-500 FORM/POST PARAMETERS

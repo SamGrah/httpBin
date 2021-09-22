@@ -12,13 +12,16 @@ createBinRouter.get('/', async (req, res) => {
     return result
   }
   
+  req.hostname
+
   let binId = generateRandomBin()
   while (await requestRecords.exists({bin: binId})) 
     binId = generateRandomBin()
 
   await requestRecords.create({bin: binId, requests: []})
   res.render('new-bin',{
-    binId: binId
+    binId: binId,
+    hostname: req.hostname, 
   })
 })
 
