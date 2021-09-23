@@ -1,14 +1,29 @@
 extends nav
 
 block main
+  script(type="text/javascript").
+    var ws = new WebSocket('ws://localhost:40510');
+    ws.onopen = function () {
+        ws.send('!{bin}')
+    }
+
+    ws.onmessage = function (serverMsg) {
+        console.log(serverMsg.data);
+        if (serverMsg.data == 'refresh') {
+          location.reload()
+        }
+    }
+
   if requests.length !== 0
     ul
       each request, idx in requests
         - const msDifference = Date.now() - request._id.getTimestamp()
-        - const minsDifference = Math.floor(msDifference/ (1000 * 60))
-        - const hoursDifference = minsDifference / 60;
-        - const daysDifference = hoursDifference / 24;
-        - let elapsedTimeString = `${minsDifference} mins`
+        - const secsDifference = Math.floor(msDifference / 1000)
+        - const minsDifference = Math.floor(secsDifference/ 60)
+        - const hoursDifference = Math.floor(minsDifference / 60)
+        - const daysDifference = Math.floor(hoursDifference / 24)
+        - let elapsedTimeString = `${secsDifference} secs`
+        - if (minsDifference >= 1) elapsedTimeString = `${minsDifference} mins`
         - if (hoursDifference >= 1) elapsedTimString = `${hoursDifference} hours`
         - if (daysDifference >= 1) elapsedTimeString = `${daysDifference} days`
         li.m-6.grid.grid-cols-3.border-2.border-gray-300
@@ -33,7 +48,7 @@ block main
                 each value, key in request.headers
                   li.whitespace-normal.break-all #[b #{key}]: #{value}
                 else 
-                  li None  
+                  li None
             div.p-2.col-span-3(style='white-space:pre;')
               span.font-bold.text-gray-500 RAW BODY  
               if Object.entries(request.body).length !== 0

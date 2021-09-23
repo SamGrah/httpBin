@@ -4,6 +4,7 @@ const requestLogRouter = require('./controllers/requestLog')
 const createBinRouter = require('./controllers/createBin');
 const viewBinRouter = require('./controllers/viewBin')
 const path = require('path')
+var ws = require('./websocket/websocket')
 
 const app = express();
 const port = 3000;
@@ -36,4 +37,4 @@ app.get('/*', (req, res) => {
   res.render('homepage')
 })
 
-app.listen(port, () => console.log("RequestBin listening for requests"));
+app.listen(port, () => console.log("httpBin listening for requests"));
