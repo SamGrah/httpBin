@@ -11,7 +11,12 @@ const requestRecordsSchema = new mongoose.Schema({
     headers: { type: {}, default: {} },
     body: { type: {}, default: {} },
     senderIP: String
-  }]
+  }],
+  expireAt: {
+    type: Date,
+    default: Date.now,
+    index: {expires: 60 * 60 * 24 * 2}
+  }
 }, { minimize: false})
 
 module.exports = mongoose.model('Requests', requestRecordsSchema)
