@@ -4,6 +4,7 @@ const websockets = {};
 
 wss.on('connection', function (ws) {
   let bin
+  console.log('new websocket connection')
   ws.on('message', function (binId) {
     bin = binId
     websockets[bin] = websockets[bin] || [];

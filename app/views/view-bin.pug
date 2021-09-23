@@ -2,7 +2,7 @@ extends nav
 
 block main
   script(type="text/javascript").
-    var ws = new WebSocket(`ws://httpbin.dev/wss`);
+    var ws = new WebSocket(`wss://!{hostname}/wss`);
     ws.onopen = function () {
         ws.send('!{bin}')
     }
