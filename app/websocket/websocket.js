@@ -1,5 +1,5 @@
 var WebSocketServer = require('ws').Server
-wss = new WebSocketServer({port: 40510});
+wss = new WebSocketServer({port: 40510, path: '/wss'});
 const websockets = {};
 
 wss.on('connection', function (ws) {
