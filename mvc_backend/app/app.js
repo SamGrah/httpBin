@@ -27,7 +27,7 @@ mongoose.connect("mongodb://127.0.0.1:27017/Request_Records")
 
 app.get('/', (req, res) => {
   res.render('homepage')
-})
+});
 
 app.use('/newbin', createBinRouter)
 app.use('/view-bin', viewBinRouter)  
