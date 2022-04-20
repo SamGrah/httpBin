@@ -1,6 +1,0 @@
-flag: default.CasC_Flag
-type: experiment
-name: following view
-value:
-  - option: true
-    percentage: 50
