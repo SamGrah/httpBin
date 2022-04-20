@@ -1,4 +1,4 @@
-flag: default.followingView
+flag: default.enableBinCreationBtn
 type: experiment
 name: following view
 value:
