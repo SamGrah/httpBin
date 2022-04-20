@@ -1,4 +1,4 @@
-flag: default.enableBinCreationBtn
+flag: default.CasC_Flag
 type: experiment
 name: following view
 value:
