@@ -1,5 +1,4 @@
 const createBinRouter = require('express').Router()
-// const { Timestamp } = require('bson')
 const requestRecords = require('../models/requestRecords')
 
 createBinRouter.get('/', async (req, res) => {
@@ -10,7 +9,7 @@ createBinRouter.get('/', async (req, res) => {
       result += chars.charAt(Math.floor(Math.random() * chars.length))
     }
     return result
-  }
+  };
   
   req.hostname
 
@@ -22,8 +21,8 @@ createBinRouter.get('/', async (req, res) => {
   res.render('new-bin',{
     binId: binId,
     hostname: req.hostname, 
-  })
-})
+  });
+});
 
 
 module.exports = createBinRouter

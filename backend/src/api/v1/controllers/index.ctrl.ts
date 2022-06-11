@@ -1,0 +1,1 @@
+export {createNewBin} from './create_new_bin.ctrl'

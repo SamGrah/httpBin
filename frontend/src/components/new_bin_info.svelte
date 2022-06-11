@@ -2,6 +2,8 @@
   import CodeSnippets from "./code_snippets.svelte"
   import { scrollEnabled } from '../store.js';
   $scrollEnabled = true;
+
+  
 </script>
 
 <div class="m-11 grid grid-cols-1 gap-1 justify-items-center w-4/6">

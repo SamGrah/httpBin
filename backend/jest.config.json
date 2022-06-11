@@ -1,0 +1,8 @@
+{
+  "preset": "ts-jest",
+  "testEnviornment": "node",
+  "roots": [
+    "./tests"
+  ],
+  "setupFiles": ["dotenv/config"]
+}

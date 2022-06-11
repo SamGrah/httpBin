@@ -1,17 +1,19 @@
 <script>
+  import {mainComponentToDisplay} from './store'
   import Nav from "./components/nav.svelte"
-  import IntroPage from "./components/create_bin.svelte";
-  import BinInfo from "./components/bin_info.svelte"
-  import { subPageToDisplay, scrollEnabled } from './store.js';
+  import Intro from "./components/intro.svelte";
+  import NewBinInfo from "./components/new_bin_info.svelte";
 </script>
 
 <div class="h-full flex flex-col">
   <Nav />
   <div class='mt-24 mx-8 flex justify-center'>
-    {#if $subPageToDisplay === 'create-bin'}
-      <IntroPage />
-    {:else if $subPageToDisplay === 'bin-info'}
-      <BinInfo />
+    {#if $mainComponentToDisplay === "Intro"}
+      <Intro />
+    {:else if $mainComponentToDisplay === "NewBinInfo"}
+      <NewBinInfo />
+    {:else}
+      404: Page not Found
     {/if}
   </div>
 </div>

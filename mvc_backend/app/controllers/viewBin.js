@@ -7,7 +7,7 @@ viewBinRouter.get('/:binId', async (req, res) => {
     res.redirect('/')
     res.end()
   } else {
-    const binContents = await requestRecords.find({bin: req.params.binId}).lean()
+    const binContents = await requestRecords.find({bin: req.params.binId}).lean();
     res.render('view-bin', {
       "bin": binContents[0].bin,
       "requests": binContents[0].requests,

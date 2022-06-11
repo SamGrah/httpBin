@@ -1,9 +1,8 @@
 <script>
-  import { subPageToDisplay } from "../store";
+  import {mainComponentToDisplay} from '../store' 
 
-  function displayBinInfo(event) {
-    event.preventDefault();
-    $subPageToDisplay = 'bin-info';
+  const navigateToNewBinInfo = () => {
+    $mainComponentToDisplay = 'NewBinInfo';
   }
 </script>
 
@@ -19,7 +18,7 @@
         </p>
         <button 
           class="mt-8 px-4 py-2 border-0 text-lg rounded" style="background-color: #214f98;"
-          on:click={displayBinInfo} 
+          on:click={navigateToNewBinInfo} 
         >
           Create Bin URL
         </button>
