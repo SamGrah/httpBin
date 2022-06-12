@@ -1,18 +1,19 @@
+import { IncomingHttpHeaders } from "http";
 import mongoose from "mongoose";
 
-export type httpRequest = mongoose.Document & {
+export type RequestProperties = {
+  originalUrl: string;
+  baseUrl: string;
+  path: string;
+  requestType: string;
+  headers: IncomingHttpHeaders;
+  body: { [key: string]: string };
+  senderIP: string | string[];
+};
+
+export type HttpRequest = mongoose.Document & {
   bin: string;
-  requests: [
-    {
-      originalUrl: string;
-      baseUrl: string;
-      path: string;
-      requestType: string;
-      headers: { [key: string]: string };
-      body: { [key: string]: string };
-      senderIP: string;
-    }
-  ];
+  requests: RequestProperties[];
 };
 
 const requestRecordsSchema = new mongoose.Schema(
@@ -38,7 +39,7 @@ const requestRecordsSchema = new mongoose.Schema(
   { minimize: false }
 );
 
-export const requestRecords = mongoose.model<httpRequest>(
+export const requestRecords = mongoose.model<HttpRequest>(
   "httpRequest",
   requestRecordsSchema
 );

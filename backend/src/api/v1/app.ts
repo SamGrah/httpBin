@@ -1,5 +1,5 @@
 import express, { Application, Request, Response } from "express";
-import {router} from './routers/index'
+import {apiRouter, binRouter} from './routers/index'
 import mongoose from "mongoose";
 import cors from 'cors';
 
@@ -15,7 +15,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/test', (_, res) => {
   res.json('httpBin Api Is Running')
 })
-app.use('/api', router)
+app.use('/api', apiRouter)
+app.use(binRouter)
 
 mongoose
   .connect(process.env.DATABASE ?? "")

@@ -1,9 +1,5 @@
 <script>
-  import {mainComponentToDisplay} from '../store' 
-
-  const navigateToNewBinInfo = () => {
-    $mainComponentToDisplay = 'NewBinInfo';
-  }
+  const navigateToNewBin = () => window.location.pathname = "/new-bin";
 </script>
 
 <div class="flex flex-col">
@@ -16,9 +12,10 @@
         <p class="text-lg inline-block sm:block">
           We create the bin. You direct the traffic
         </p>
-        <button 
-          class="mt-8 px-4 py-2 border-0 text-lg rounded" style="background-color: #214f98;"
-          on:click={navigateToNewBinInfo} 
+        <button
+          class="mt-8 px-4 py-2 border-0 text-lg rounded" 
+          style="background-color: #214f98;" 
+          on:click={navigateToNewBin}
         >
           Create Bin URL
         </button>

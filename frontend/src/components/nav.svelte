@@ -1,12 +1,8 @@
-<script>
-  import {mainComponentToDisplay} from '../store'
-  const navigateToIntro = () => $mainComponentToDisplay = 'Intro'
-</script>
 <nav class="fixed w-screen" style="background-color: #21CEAB;">
   <div class="max-w-10xl mx-auto">
     <div class="relative flex items-center justify-between h-16 mx-8">
         <div class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
-          <a class="flex-shrink-0 flex items-center hover:opacity-50" href="." on:click={navigateToIntro}>
+          <a class="flex-shrink-0 flex items-center hover:opacity-50" href="/" >
             <img class="block h-12 w-auto" src="/images/logo.png" alt="httpBin">
             <span class="ml-1 text-white text-4xl font-large font-bold">
                 <i>httpBin</i>
