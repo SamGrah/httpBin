@@ -1,0 +1,14 @@
+{
+  "folders": [
+    {
+      "path": "frontend",
+    },
+    {
+      "path": "project"
+    },
+    {
+      "path": "service-bridge"
+    },
+  ],
+  "settings": {}
+}
