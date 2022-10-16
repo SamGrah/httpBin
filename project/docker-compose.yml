@@ -18,3 +18,14 @@ services:
     deploy:
       mode: replicated
       replicas: 1
+
+  mongo:
+    image: 'mongo:latest'
+    ports:
+      - "27017:27107"
+    environment:
+      MONGO_INITDB_DATABASE: bins
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password
+    volumes:
+      - ./db-data/mongo/:/data/db 
