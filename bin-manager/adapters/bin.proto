@@ -1,0 +1,18 @@
+/*
+Execute generate code from this protofile with the following command line:
+protoc --go_out=./generated --go_opt=paths=source_relative --go-grpc_out=./generated --go-grpc_opt=paths=source_relative adapters/bin.proto
+*/
+syntax = "proto3";
+package binManager;
+
+option go_package = "/binManager";
+
+message Params {}
+
+message BinId {
+  string binId = 1;
+};
+
+service BinManager {
+  rpc GenerateNewBin(Params) returns (BinId) {}
+};

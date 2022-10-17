@@ -21,7 +21,7 @@ down:
 	@echo "Done!"
 
 ## build_frontend: builds the frontend as JS  
-build_service_bridge:
+build_frontend:
 	@echo "Building frontend..."
 	cd ../frontend &&  
 	@echo "Done!"
@@ -29,6 +29,6 @@ build_service_bridge:
 ## build_broker: builds the broker binary as a linux executable
 build_service_bridge:
 	@echo "Building service bridge binary..."
-	cd ../service-bridge && env GOOS=linux CGO_ENABLED=0 go build -o ${SERVICE_BRIDGE_BINARY} ./cmd
+	cd ../service-bridge && env GOOS=linux CGO_ENABLED=0 go build -o ${SERVICE_BRIDGE_BINARY} ./server
 	@echo "Done!"
 
