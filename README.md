@@ -8,18 +8,25 @@ The other unique endpoint provides a page on which the user can review all of th
 It's main use is to test that webhooks are configured and working as expected.
 
 
+## Tech Stack
+Frontend  - SvelteKit
+Go & gRPC - Service Code
+MongoDB   - Requests Datastore
+Docker    - Deployment
+
+
 ## Instructions
 First, build all necessary docker images. Docker must be installed an running in the environment.
 ```
-Make up_build
+> make up_build
 ```
 
 Run all services (including the frontend)
 ```
-make up
+> make up
 ```
 
 Teardown and destroy all containers
 ```
-make down
+> make down
 ```
