@@ -13,8 +13,20 @@ services:
     build:
       context: ./../service-bridge
       dockerfile: ./../service-bridge/service-bridge.Dockerfile
+    expose:
+      - "9000"
     ports:
       - "8080:8080"
+    deploy:
+      mode: replicated
+      replicas: 1
+
+  bin-manager:
+    build:
+      context: ./../bin-manager
+      dockerfile: ./../bin-manager/bin-manager.Dockerfile
+    ports:
+      - "9000:9000"
     deploy:
       mode: replicated
       replicas: 1

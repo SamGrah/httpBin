@@ -1,4 +1,5 @@
 SERVICE_BRIDGE_BINARY=serviceBridgeApp
+BIN_MANAGER_BINARY=binManagerApp
 
 ## up: starts all containers in the background without forcing build
 up:
@@ -7,7 +8,7 @@ up:
 	@echo "Docker images started!"
 
 ## up_build: stops docker-compose (if running), builds all projects and starts docker compose
-up_build: build_service_bridge
+up_build: build_service_bridge build_bin_manager
 	@echo "Stopping docker images (if running...)"
 	docker-compose down
 	@echo "Building (when required) and starting docker images..."
@@ -26,9 +27,14 @@ build_frontend:
 	cd ../frontend &&  
 	@echo "Done!"
 
-## build_broker: builds the broker binary as a linux executable
+## build_service_bridge: builds the service bridge binary as a linux executable
 build_service_bridge:
 	@echo "Building service bridge binary..."
-	cd ../service-bridge && env GOOS=linux CGO_ENABLED=0 go build -o ${SERVICE_BRIDGE_BINARY} ./server
+	cd ../service-bridge && env GOOS=linux CGO_ENABLED=0 go build -o ${SERVICE_BRIDGE_BINARY} server.go
 	@echo "Done!"
 
+## build_bin_manager: builds the service bridge binary as a linux executable
+build_bin_manager:
+	@echo "Building bin manager binary..."
+	cd ../bin-manager && env GOOS=linux CGO_ENABLED=0 go build -o ${BIN_MANAGER_BINARY} server.go 
+	@echo "Done!"
