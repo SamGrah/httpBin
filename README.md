@@ -9,7 +9,7 @@ It's main use is to test that webhooks are configured and working as expected.
 
 
 ## Instructions
-First, build all necessary docker images. Docker must be installed an running in the environment.
+First, build all necessary docker images. Docker must be installed and running in the environment.
 ```
 > make up_build
 ```
