@@ -10,7 +10,7 @@ import (
 	"google.golang.org/grpc"
 )
 
-const gpcPort = "9000"
+const gpcPort = "65535"
 
 type binManagerServer struct {
 	binManager.UnimplementedBinManagerServer
@@ -19,7 +19,7 @@ type binManagerServer struct {
 func main() {
 	// essentially this is openning the port for the grpc server
 	// and establishing a tcp listener for it
-	lis, err := net.Listen("tcp", fmt.Sprintf(":%s", gpcPort))
+	lis, err := net.Listen("tcp", fmt.Sprintf("localhost:%s", gpcPort))
 	if err != nil {
 		log.Fatalf("failed to enable a listener for the grpc server: %v", err)
 	}

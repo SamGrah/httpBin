@@ -12,10 +12,10 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 )
 
-const	binManagerGrpcPort = "9000"
+const	binManagerGrpcPort = "65535"
 
 func CreateBin(w http.ResponseWriter, r *http.Request) {
-	binManagerPort := fmt.Sprintf(":%s", binManagerGrpcPort)
+	binManagerPort := fmt.Sprintf("localhost:%s", binManagerGrpcPort)
 	conn, err := grpc.Dial(binManagerPort, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		log.Fatalf("did not connect to: %v", err)

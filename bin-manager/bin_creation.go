@@ -5,7 +5,7 @@ import (
 	"context"
 )
 
-func (s *binManagerServer) GenerateNewBin(context.Context, *binManager.Params) (*binManager.BinId, error) {
+func (s *binManagerServer) GenerateNewBin(ctx context.Context, params *binManager.Params) (*binManager.BinId, error) {
 	binId := binManager.BinId{
 		BinId: "xv7ty",
 	}
