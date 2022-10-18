@@ -9,10 +9,10 @@ It's main use is to test that webhooks are configured and working as expected.
 
 
 ## Tech Stack
-Frontend  - SvelteKit
-Go & gRPC - Service Code
-MongoDB   - Requests Datastore
-Docker    - Deployment
+SvelteKit - Frontend<br />
+Go & gRPC - Service Code<br />
+MongoDB   - Requests Datastore<br />
+Docker    - Deployment<br />
 
 
 ## Instructions
