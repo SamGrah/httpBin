@@ -15,7 +15,7 @@ import (
 const	binManagerGrpcPort = "65535"
 
 func CreateBin(w http.ResponseWriter, r *http.Request) {
-	binManagerPort := fmt.Sprintf("localhost:%s", binManagerGrpcPort)
+	binManagerPort := fmt.Sprintf("bin-manager:%s", binManagerGrpcPort)
 	conn, err := grpc.Dial(binManagerPort, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		log.Fatalf("did not connect to: %v", err)
