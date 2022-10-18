@@ -1,5 +1,4 @@
 ## Description
----
 This is a simple tool for capturing and reviewing requests made by a webhook.
 The user creates a 'bin' and provides two unique endpoints to the user.
 
@@ -10,7 +9,6 @@ It's main use is to test that webhooks are configured and working as expected.
 
 
 ## Instructions
----
 First, build all necessary docker images. Docker must be installed an running in the environment.
 ```
 Make up_build
