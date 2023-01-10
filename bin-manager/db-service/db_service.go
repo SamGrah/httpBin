@@ -10,7 +10,13 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-var bins_collection *mongo.Collection
+const dbPort = "27017"
+const dbIP = "mongo_db"
+
+type CollectionDetails struct {
+	Client *mongo.Client
+	Collection *mongo.Collection
+}
 
 type HttpRequestDetails struct {
 	Content string
@@ -21,7 +27,7 @@ type Bin struct {
 	RequestContent HttpRequestDetails	
 }
 
-func CreateDbConn(dbIP string, dbPort string) (*mongo.Client, error) {
+func createDbConn() (*mongo.Client, error) {
 	// Set client options
 	connectionString := fmt.Sprintf("mongodb://admin:password@%s:%s/", dbIP, dbPort)
 	clientOptions := options.Client().ApplyURI(connectionString)
@@ -36,11 +42,6 @@ func CreateDbConn(dbIP string, dbPort string) (*mongo.Client, error) {
 	fmt.Println("Connected to MongoDB!")
 	// Close the db connection when bin_manager process ends
 	// defer func() {
-	// 	if err = client.Disconnect(context.TODO()); err != nil {
-	// 		panic(err)
-	// 	}
-	// 	fmt.Println("Disconnected client from MongoDB!")
-	// }()
 
 	// Check the connection
 	err = client.Ping(context.Background(), nil)
@@ -55,17 +56,47 @@ func CreateDbConn(dbIP string, dbPort string) (*mongo.Client, error) {
 	return client, nil
 }
 
-// func FindBin(binId string) (string, error) {
-// 	newBin := Bin{"newID", HttpRequestDetails{"http request header & payload"}}
-// 	insertResult, err := bins_collection.InsertOne(context.TODO(), newBin)
-// 	if err != nil {
-// 			fmt.Println("Failed to insert one record")
-// 			log.Fatal(err)
-// 	}
-// 	fmt.Println("Inserted a single document: ", insertResult.InsertedID)	
+func closeDbConn(client *mongo.Client) {
+	if err := client.Disconnect(context.Background()); err != nil {
+		log.Fatal(err)
+		fmt.Println("Error encountered when disconnecting from MongoDB!")
+	}
+	fmt.Println("Disconnected client from MongoDB!")
+}
 
-// }
+func getDbCollectionDetails(DbName string, CollectionName string) (*CollectionDetails, error) {
+	client, err := createDbConn()
+	if err != nil {
+		log.Fatal(err)
+		return nil, err
+	}
 
-// func CreateNewBin() (*mongo.Collection, error) {}
+	collection := client.Database(DbName).Collection(CollectionName)
+	collectionDetails := CollectionDetails{ client, collection } 
+	return &collectionDetails, nil
+}
 
+func CreateNewBin(binId string) error {
+	connDetails, err := getDbCollectionDetails("httpBin", "bins")
+	if err != nil {
+			fmt.Println("Failed to fetch Db collection")
+			log.Fatal(err)
+			return err
+	}
+
+	newBin := Bin{binId, HttpRequestDetails{"http request header & payload"}}
+	insertResult, err := connDetails.Collection.InsertOne(context.Background(), newBin)
+	if err != nil {
+			fmt.Println("Failed to insert one record")
+			log.Fatal(err)
+			return err
+	}
+
+	fmt.Println("Inserted a single document: ", insertResult.InsertedID)
+
+	closeDbConn(connDetails.Client)
+	return nil 
+}
+
+// func FindBin(binId string) (string, error) {}
 // func AddRequestToBin() (*mongo.Collection, error) {}

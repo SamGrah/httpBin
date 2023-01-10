@@ -1,20 +1,16 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"log"
 	"net"
 
 	"bin-manager/generated/adapters"
 	"bin-manager/services"
-	"bin-manager/db-service"
 	"google.golang.org/grpc"
 )
 
 const gpcPort = "65535"
-const dbPort = "27017"
-const dbIP = "mongo_db"
 
 type BinMgmtServer struct {
 	binManager.UnimplementedBinManagerServer
@@ -23,7 +19,7 @@ type BinMgmtServer struct {
 
 func main() {
 	fmt.Printf("Connecting to MongoDB...")
-	db_service.CreateDbConn(dbIP, dbPort)	
+	services.GenerateNewBin()	
 
 	// essentially this is openning the port for the grpc server
 	// and establishing a tcp listener for it
@@ -43,15 +39,15 @@ func main() {
 	}
 }
 
-func GenerateNewBin(ctx context.Context, params *binManager.Params) (*binManager.BinId, error) {
-	binId, err := services.CreateNewBinId() 
-	if err != nil {
-		log.Fatal("failed to create a new bin id", err) 
-	}
+// func GenerateNewBin(ctx context.Context, params *binManager.Params) (*binManager.BinId, error) {
+// 	binId, err := services.GenerateNewBin() 
+// 	if err != nil {
+// 		log.Fatal("failed to create a new bin id", err) 
+// 	}
 	
-	payload := binManager.BinId{
-		BinId: binId,
-	}
-	return &payload, nil 
-}
+// 	payload := binManager.BinId{
+// 		BinId: binId,
+// 	}
+// 	return &payload, nil 
+// }
 
