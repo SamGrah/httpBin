@@ -13,5 +13,7 @@
       "path": "bin-manager"
     }
   ],
-  "settings": {}
+  "settings": {
+    "customWindowZoom.zoomLevelChangeValue": 0.05
+  }
 }

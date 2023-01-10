@@ -25,6 +25,8 @@ services:
     build:
       context: ./../bin-manager
       dockerfile: ./../bin-manager/bin-manager.Dockerfile
+    depends_on:
+      - mongo
     ports:
       - "65535:65535"
     deploy:
@@ -32,9 +34,10 @@ services:
       replicas: 1
 
   mongo:
+    hostname: mongo_db
     image: 'mongo:latest'
     ports:
-      - "27017:27107"
+      - "27017:27017"
     environment:
       MONGO_INITDB_DATABASE: bins
       MONGO_INITDB_ROOT_USERNAME: admin
