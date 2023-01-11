@@ -26,7 +26,20 @@ func generateNewBinId() string {
 }
 
 func CreateNewBin() (string, error) {
-	binId := generateNewBinId() 
+	var binId string
+	for {
+		binId = generateNewBinId() 
+
+		duplicateBinId, err := db_service.BinIdExists(binId)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		if !duplicateBinId {
+			break
+		}
+	}
+
 	err := db_service.CreateNewBin(binId)
 	if err != nil {
 		fmt.Println("Failed to generate new bin")

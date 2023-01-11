@@ -6,6 +6,7 @@ import (
 	"log"
 
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/x/bsonx"
@@ -14,19 +15,6 @@ import (
 const dbPort = "27017"
 const dbIP = "mongo_db"
 
-type CollectionDetails struct {
-	Client *mongo.Client
-	Collection *mongo.Collection
-}
-
-type HttpRequestDetails struct {
-	Content string
-}
-
-type Bin struct {
-	BinId string
-	Requests []HttpRequestDetails
-}
 
 func Init() error {
 	fmt.Printf("Connecting to MongoDB...")
@@ -163,13 +151,35 @@ func CreateNewBin(binId string) error {
 	}
 
 	fmt.Println("Inserted a single document: ", insertResult.InsertedID)
-
-
-	
 	closeDbConn(connDetails.Client)
 	return nil 
 }
 
+func BinIdExists(binId string) (bool, error) {
+	connDetails, err := getDbCollectionDetails("httpBin", "bins")
+	if err != nil {
+			fmt.Println("Failed to fetch Db collection")
+			log.Fatal(err)
+			return false, err
+	}
 
-// func FindBin(binId string) (string, error) {}
+	var result Bin
+	var binExists bool
+
+	filter := bson.D{primitive.E{Key: "binid", Value: binId}}
+	err = connDetails.Collection.FindOne(context.TODO(), filter).Decode(&result)
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			binExists = false	
+		} else {
+			log.Fatal(err)
+		}	
+	} else {
+		binExists = true
+	}
+
+	closeDbConn(connDetails.Client)
+	return binExists, nil
+}
+
 // func AddRequestToBin() (*mongo.Collection, error) {}
