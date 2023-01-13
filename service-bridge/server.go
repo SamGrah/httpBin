@@ -1,25 +1,42 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 
-	html "service-bridge/rest-api"
+	adapters "service-bridge/adapters"
+	"service-bridge/controllers"
+	"service-bridge/repositories"
+
+	html "service-bridge/endpoints"
 )
 
-const serverPort = "8080"
+const (
+	httpServerPort = ":8080"
+	grpcListenerAddr = "0.0.0.0:65535"
+	binMangerGrpcSvc = "bin-manager:65535"
+)
 
 func main() {
-	server := &http.Server{
-		Addr: fmt.Sprintf(":%s", serverPort),
-		Handler: html.Routes(),
+	binManagerSrv := adapters.ConnectToBinMgmtSrv()
+	defer binManagerSrv.CloseConn()
+
+	binManagerRepo := repositories.NewBinManagerRepo(*binManagerSrv.Client)
+
+	binMgmtHandler := controllers.NewBinMgmtBaseHandler(binManagerRepo)
+	handlersRegister := &html.Handlers{
+		BinMgmtHandler: binMgmtHandler,
 	}
 
-	log.Printf("Service-Bridge listening for HTTP requests on port %s\n", serverPort)
-	
-	err := server.ListenAndServe()
+	httpServer := &http.Server{
+		Addr: httpServerPort,
+		Handler: html.Routes(handlersRegister),
+	}
+
+	err := httpServer.ListenAndServe()
 	if err != nil {
 		log.Panic(err)
 	}
+	log.Printf("Service-Bridge listening for HTTP requests on port %s\n", httpServerPort)
 }
+

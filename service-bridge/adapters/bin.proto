@@ -13,6 +13,11 @@ message BinId {
   string binId = 1;
 };
 
+message LoggedRequests {
+  repeated string httpRequestDetails = 1;
+}
+
 service BinManager {
   rpc GenerateNewBin(Params) returns (BinId) {}
+  // rpc LogRequestToBin(Params) returns (LoggedRequests) {}
 };
