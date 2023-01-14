@@ -9,15 +9,18 @@ option go_package = "/binManager";
 
 message Params {}
 
-message BinId {
+message NewBinResponse {
   string binId = 1;
 };
 
-message LoggedRequests {
-  repeated string httpRequestDetails = 1;
+message HttpRequestDetails {
+  string binId = 1;
+  string httpRequestContents = 2;
 }
 
+message LogRequestResponse {}
+
 service BinManager {
-  rpc GenerateNewBin(Params) returns (BinId) {}
-  // rpc LogRequestToBin(Params) returns (LoggedRequests) {}
+  rpc GenerateNewBin(Params) returns (NewBinResponse) {}
+  rpc LogRequestToBin(HttpRequestDetails) returns (LogRequestResponse) {}
 };

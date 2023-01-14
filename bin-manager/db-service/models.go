@@ -10,6 +10,7 @@ type CollectionDetails struct {
 }
 
 type HttpRequestDetails struct {
+	BinId	string
 	Content string
 }
 

@@ -138,7 +138,8 @@ func CreateNewBin(binId string) error {
 			return err
 	}
 
-	var emptyHttpRequestsSlice []HttpRequestDetails
+	// var emptyHttpRequestsSlice []HttpRequestDetails
+	emptyHttpRequestsSlice := make([]HttpRequestDetails, 0)
 	newBin := Bin{
 		BinId: binId, 
 		Requests: emptyHttpRequestsSlice,
@@ -182,4 +183,26 @@ func BinIdExists(binId string) (bool, error) {
 	return binExists, nil
 }
 
-// func AddRequestToBin() (*mongo.Collection, error) {}
+func AddRequestToBin(binId, content string) error {
+	connDetails, err := getDbCollectionDetails("httpBin", "bins")
+	if err != nil {
+			fmt.Println("Failed to fetch Db collection")
+			log.Fatal(err)
+			return err
+	}
+ 
+	filter := bson.D{{Key:"binid", Value: binId}}		
+	update := bson.M{ 
+		"$push": bson.M{ "requests": content },
+	}
+
+	_, err = connDetails.Collection.UpdateOne(context.TODO(), filter, update)
+	if err != nil {
+		fmt.Printf("error adding request contents to bin: %s", binId)
+		log.Fatal(err)
+		return err
+	}
+
+	closeDbConn(connDetails.Client)
+	return nil
+}

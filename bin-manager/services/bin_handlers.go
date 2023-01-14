@@ -49,3 +49,13 @@ func CreateNewBin() (string, error) {
 
 	return binId, nil
 }
+
+func LogRequestToBin(binId string, requestDetails string) (error) {
+	err := db_service.AddRequestToBin(binId, requestDetails)
+	if err != nil {
+		log.Fatal(err)
+		return err
+	}
+	
+	return nil
+}
