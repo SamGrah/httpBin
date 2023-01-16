@@ -1,4 +1,4 @@
-package helpers
+package controllers
 
 import (
 	"encoding/json"
@@ -7,10 +7,10 @@ import (
 
 type jsonResponse struct {
 	Error bool `json:"error"`
-	Data any `json:"bin"`
+	Data any 
 }
 
-func WriteJSON(w http.ResponseWriter, status int, data any) error {
+func WriteJSON(w http.ResponseWriter, status int, data *jsonResponse) error {
 	out, err := json.Marshal(data)
 	if err != nil {
 		return err

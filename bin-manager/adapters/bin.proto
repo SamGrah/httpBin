@@ -15,7 +15,7 @@ message NewBinResponse {
 
 message HttpRequestDetails {
   string binId = 1;
-  string httpRequestContents = 2;
+  map<string, string> httpRequestContents = 2;
 }
 
 message LogRequestResponse {}

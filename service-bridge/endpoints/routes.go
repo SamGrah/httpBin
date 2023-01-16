@@ -26,7 +26,7 @@ func Routes(h *Handlers) http.Handler {
 	}))
 	
 	router.Post("/new-bin", h.BinMgmtHandler.CreateNewBin)
-	// router.Post("/bin/{binId}", h.binMgmtHandler.Lo)
+	router.Post("/bin/{binId}", h.BinMgmtHandler.LogRequest)
 	// router.Get("/view-bin/{binId}", FetchBinContents)
 
 	return router

@@ -183,14 +183,14 @@ func BinIdExists(binId string) (bool, error) {
 	return binExists, nil
 }
 
-func AddRequestToBin(binId, content string) error {
+func AddRequestToBin(binId string, content map[string]string) error {
 	connDetails, err := getDbCollectionDetails("httpBin", "bins")
 	if err != nil {
 			fmt.Println("Failed to fetch Db collection")
 			log.Fatal(err)
 			return err
 	}
- 
+
 	filter := bson.D{{Key:"binid", Value: binId}}		
 	update := bson.M{ 
 		"$push": bson.M{ "requests": content },

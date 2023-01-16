@@ -5,7 +5,7 @@ type HttpRequests struct {
 }
 
 type Bin struct {
-	Id string
+	BinId string
 	Contents *HttpRequests 
 }
 

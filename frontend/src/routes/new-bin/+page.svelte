@@ -5,7 +5,7 @@
   
   async function createNewBin() {
     const { data } = await axios.post('http://localhost:8080/new-bin')
-    return data.bin.Id
+    return data.Data.binId
   }
 
   $scrollEnabled = true;
