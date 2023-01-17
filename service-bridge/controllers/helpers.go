@@ -25,5 +25,3 @@ func WriteJSON(w http.ResponseWriter, status int, data *jsonResponse) error {
 	
 	return nil
 }
-
-

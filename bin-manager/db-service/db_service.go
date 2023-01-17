@@ -139,7 +139,7 @@ func CreateNewBin(binId string) error {
 	}
 
 	// var emptyHttpRequestsSlice []HttpRequestDetails
-	emptyHttpRequestsSlice := make([]HttpRequestDetails, 0)
+	emptyHttpRequestsSlice := make([]map[string]string, 0)
 	newBin := Bin{
 		BinId: binId, 
 		Requests: emptyHttpRequestsSlice,

@@ -1,6 +1,7 @@
-package services 
+package services
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"math/rand"
@@ -51,7 +52,18 @@ func CreateNewBin() (string, error) {
 }
 
 func LogRequestToBin(binId string, requestDetails map[string]string) (error) {
-	err := db_service.AddRequestToBin(binId, requestDetails)
+	binInDb, err := db_service.BinIdExists(binId)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if !binInDb {
+		err = errors.New("http request to be logged in unknown bin")
+		log.Fatal(err)
+		return err 
+	}
+	
+	err = db_service.AddRequestToBin(binId, requestDetails)
 	if err != nil {
 		log.Fatal(err)
 		return err

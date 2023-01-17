@@ -23,7 +23,8 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type BinManagerClient interface {
 	GenerateNewBin(ctx context.Context, in *Params, opts ...grpc.CallOption) (*NewBinResponse, error)
-	LogRequestToBin(ctx context.Context, in *HttpRequestDetails, opts ...grpc.CallOption) (*LogRequestResponse, error)
+	LogRequestToBin(ctx context.Context, in *LogRequestParams, opts ...grpc.CallOption) (*LogRequestResponse, error)
+	FetchBinContents(ctx context.Context, in *FetchBinContentsParams, opts ...grpc.CallOption) (*FetchBinContentsResponse, error)
 }
 
 type binManagerClient struct {
@@ -43,9 +44,18 @@ func (c *binManagerClient) GenerateNewBin(ctx context.Context, in *Params, opts 
 	return out, nil
 }
 
-func (c *binManagerClient) LogRequestToBin(ctx context.Context, in *HttpRequestDetails, opts ...grpc.CallOption) (*LogRequestResponse, error) {
+func (c *binManagerClient) LogRequestToBin(ctx context.Context, in *LogRequestParams, opts ...grpc.CallOption) (*LogRequestResponse, error) {
 	out := new(LogRequestResponse)
 	err := c.cc.Invoke(ctx, "/binManager.BinManager/LogRequestToBin", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *binManagerClient) FetchBinContents(ctx context.Context, in *FetchBinContentsParams, opts ...grpc.CallOption) (*FetchBinContentsResponse, error) {
+	out := new(FetchBinContentsResponse)
+	err := c.cc.Invoke(ctx, "/binManager.BinManager/FetchBinContents", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -57,7 +67,8 @@ func (c *binManagerClient) LogRequestToBin(ctx context.Context, in *HttpRequestD
 // for forward compatibility
 type BinManagerServer interface {
 	GenerateNewBin(context.Context, *Params) (*NewBinResponse, error)
-	LogRequestToBin(context.Context, *HttpRequestDetails) (*LogRequestResponse, error)
+	LogRequestToBin(context.Context, *LogRequestParams) (*LogRequestResponse, error)
+	FetchBinContents(context.Context, *FetchBinContentsParams) (*FetchBinContentsResponse, error)
 	mustEmbedUnimplementedBinManagerServer()
 }
 
@@ -68,8 +79,11 @@ type UnimplementedBinManagerServer struct {
 func (UnimplementedBinManagerServer) GenerateNewBin(context.Context, *Params) (*NewBinResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GenerateNewBin not implemented")
 }
-func (UnimplementedBinManagerServer) LogRequestToBin(context.Context, *HttpRequestDetails) (*LogRequestResponse, error) {
+func (UnimplementedBinManagerServer) LogRequestToBin(context.Context, *LogRequestParams) (*LogRequestResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LogRequestToBin not implemented")
+}
+func (UnimplementedBinManagerServer) FetchBinContents(context.Context, *FetchBinContentsParams) (*FetchBinContentsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FetchBinContents not implemented")
 }
 func (UnimplementedBinManagerServer) mustEmbedUnimplementedBinManagerServer() {}
 
@@ -103,7 +117,7 @@ func _BinManager_GenerateNewBin_Handler(srv interface{}, ctx context.Context, de
 }
 
 func _BinManager_LogRequestToBin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(HttpRequestDetails)
+	in := new(LogRequestParams)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -115,7 +129,25 @@ func _BinManager_LogRequestToBin_Handler(srv interface{}, ctx context.Context, d
 		FullMethod: "/binManager.BinManager/LogRequestToBin",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BinManagerServer).LogRequestToBin(ctx, req.(*HttpRequestDetails))
+		return srv.(BinManagerServer).LogRequestToBin(ctx, req.(*LogRequestParams))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BinManager_FetchBinContents_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FetchBinContentsParams)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BinManagerServer).FetchBinContents(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/binManager.BinManager/FetchBinContents",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BinManagerServer).FetchBinContents(ctx, req.(*FetchBinContentsParams))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -134,6 +166,10 @@ var BinManager_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "LogRequestToBin",
 			Handler:    _BinManager_LogRequestToBin_Handler,
+		},
+		{
+			MethodName: "FetchBinContents",
+			Handler:    _BinManager_FetchBinContents_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -11,16 +11,29 @@ message Params {}
 
 message NewBinResponse {
   string binId = 1;
-};
+}
 
-message HttpRequestDetails {
+message LogRequestParams {
   string binId = 1;
-  map<string, string> httpRequestContents = 2;
+  map<string, string> requestToLog = 2;
 }
 
 message LogRequestResponse {}
 
+message FetchBinContentsParams {
+  string binId = 1;
+}
+
+message HttpRequest {
+  map<string, string> contents = 1;
+}
+
+message FetchBinContentsResponse {
+  repeated HttpRequest binContents = 1;
+}
+
 service BinManager {
   rpc GenerateNewBin(Params) returns (NewBinResponse) {}
-  rpc LogRequestToBin(HttpRequestDetails) returns (LogRequestResponse) {}
+  rpc LogRequestToBin(LogRequestParams) returns (LogRequestResponse) {}
+  rpc FetchBinContents(FetchBinContentsParams) returns (FetchBinContentsResponse) {}
 };

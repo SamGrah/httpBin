@@ -24,8 +24,8 @@ func (s *BinMgmtServer) GenerateNewBin(ctx context.Context, params *binManager.P
 	return &payload, nil 
 }
 
-func (s *BinMgmtServer) LogRequestToBin (ctx context.Context, request *binManager.HttpRequestDetails) (*binManager.LogRequestResponse, error) {
-	err := services.LogRequestToBin(request.BinId, request.HttpRequestContents)
+func (s *BinMgmtServer) LogRequestToBin(ctx context.Context, params *binManager.LogRequestParams) (*binManager.LogRequestResponse, error) {
+	err := services.LogRequestToBin(params.BinId, params.RequestToLog)
 
 	if err != nil {
 		log.Fatal("failed to log request to bin", err)
@@ -34,3 +34,5 @@ func (s *BinMgmtServer) LogRequestToBin (ctx context.Context, request *binManage
 	payload := binManager.LogRequestResponse{}
 	return &payload, err 
 }
+
+// func (s *BinMgmtServer)

@@ -54,9 +54,17 @@ func (h *BinMgmtBaseHandler) LogRequest(w http.ResponseWriter, r *http.Request) 
 		log.Fatal(err)
 	}
 
+	w.WriteHeader(http.StatusAccepted)
+	_, err = w.Write(nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+func (h *BinMgmtBaseHandler) FetchBinContents(w http.ResponseWriter, r *http.Request) {
 	payload := &jsonResponse{
 		Error: false,
-		Data:  requestDetails,
+		Data:  "successful call to FetchBinContents",
 	}
 	statusCode := http.StatusAccepted
 

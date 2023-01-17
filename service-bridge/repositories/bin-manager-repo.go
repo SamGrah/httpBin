@@ -17,7 +17,7 @@ func NewBinManagerRepo(clientConn binManager.BinManagerClient) *BinManagerRepo {
 	}
 }
 
-func (r *BinManagerRepo) CreateNewBin() (*binManager.HttpRequestDetails, error) {
+func (r *BinManagerRepo) CreateNewBin() (*binManager.NewBinResponse, error) {
 	response, err := r.clientConn.GenerateNewBin(context.Background(), &binManager.Params{})
 	if err != nil {
 		log.Fatalf("Error when calling GenerateNewBin: %s", err)
@@ -25,16 +25,15 @@ func (r *BinManagerRepo) CreateNewBin() (*binManager.HttpRequestDetails, error) 
 	}
 	log.Printf("Response from server: %s", response.BinId)
 
-	return &binManager.HttpRequestDetails{
+	return &binManager.NewBinResponse{
 		BinId:               response.BinId,
-		HttpRequestContents: nil,
 	}, nil
 }
 
 func (r *BinManagerRepo) LogRequest(binId string, requestContents map[string]string) error {
-	httpRequestDetails := &binManager.HttpRequestDetails{
+	httpRequestDetails := &binManager.LogRequestParams{
 		BinId:	binId,
-		HttpRequestContents: requestContents,
+		RequestToLog: requestContents,
 	}
 
 	_, err := r.clientConn.LogRequestToBin(context.Background(), httpRequestDetails)

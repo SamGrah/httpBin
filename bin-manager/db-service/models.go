@@ -16,5 +16,5 @@ type HttpRequestDetails struct {
 
 type Bin struct {
 	BinId    string
-	Requests []HttpRequestDetails
+	Requests []map[string]string 
 }
