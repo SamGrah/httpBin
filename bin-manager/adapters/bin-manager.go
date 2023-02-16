@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 
+	db_service "bin-manager/db-service"
 	"bin-manager/generated/adapters"
 	"bin-manager/services"
 )

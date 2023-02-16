@@ -139,10 +139,11 @@ func CreateNewBin(binId string) error {
 	}
 
 	// var emptyHttpRequestsSlice []HttpRequestDetails
-	emptyHttpRequestsSlice := make([]map[string]string, 0)
-	newBin := Bin{
+	emptyHttpRequestsSlice := make(BinContents, 0)
+  
+	newBin := &Bin{
 		BinId: binId, 
-		Requests: emptyHttpRequestsSlice,
+		BinContents: &emptyHttpRequestsSlice,
 	}
 	insertResult, err := connDetails.Collection.InsertOne(context.Background(), newBin)
 	if err != nil {
@@ -183,7 +184,7 @@ func BinIdExists(binId string) (bool, error) {
 	return binExists, nil
 }
 
-func AddRequestToBin(binId string, content map[string]string) error {
+func AddRequestToBin(binId string, content HttpRequestContents) error {
 	connDetails, err := getDbCollectionDetails("httpBin", "bins")
 	if err != nil {
 			fmt.Println("Failed to fetch Db collection")
@@ -205,4 +206,36 @@ func AddRequestToBin(binId string, content map[string]string) error {
 
 	closeDbConn(connDetails.Client)
 	return nil
+}
+
+func GetBinContents(binId string) (*[]HttpRequestContents, error) {
+	connDetails, err := getDbCollectionDetails("httpBin", "bins")
+	if err != nil {
+			fmt.Println("Failed to fetch Db collection")
+			log.Fatal(err)
+			return nil, err
+	}
+
+	if err != nil {
+		fmt.Printf("error fetching contents for bin: %s", binId)
+		log.Fatal(err)
+		return nil, err
+	}
+
+	var result Bin
+	filter := bson.D{primitive.E{Key: "binid", Value: binId}}
+
+	err = connDetails.Collection.FindOne(context.TODO(), filter).Decode(&result)
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			fmt.Printf("error fetching contents for bin: %s", binId)
+			log.Fatal(err)
+		} else {
+			log.Fatal(err)
+		}	
+			return nil, err
+	}
+
+	closeDbConn(connDetails.Client)
+	return &result.BinContents, nil
 }
