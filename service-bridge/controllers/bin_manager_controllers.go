@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"service-bridge/repositories"
+	"service-bridge/models"
 
 	"github.com/go-chi/chi/v5"
 )
@@ -47,9 +48,15 @@ func (h *BinMgmtBaseHandler) LogRequest(w http.ResponseWriter, r *http.Request) 
 		}
 	}
 
-	binId := chi.URLParam(r, "binId")
+	binId := &models.BinId{
+		BinId: chi.URLParam(r, "binId"),
+	}
 
-	err := h.BinMgmtRepo.LogRequest(binId, requestDetails)
+	requestContents := &models.HttpRequest{
+		Contents: requestDetails,
+	}
+
+	err := h.BinMgmtRepo.LogRequest(binId, requestContents)
 	if err != nil {
 		log.Fatal(err)
 	}
