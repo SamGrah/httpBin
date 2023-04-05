@@ -4,9 +4,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-type BinId string
 type HttpRequestContents map[string]string
-type BinContents []HttpRequestContents
 
 type CollectionDetails struct {
 	Client     *mongo.Client
@@ -14,11 +12,11 @@ type CollectionDetails struct {
 }
 
 type HttpRequestDetails struct {
-	BinId   
+	BinId string
 	HttpRequestContents
 }
 
 type Bin struct {
-	BinId
-	*BinContents 
+	BinId string	
+	BinContents *[]HttpRequestContents
 }

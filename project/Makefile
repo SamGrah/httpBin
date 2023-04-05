@@ -1,7 +1,7 @@
 SERVICE_BRIDGE_BINARY=serviceBridgeApp
 BIN_MANAGER_BINARY=binManagerApp
 
-## up: starts all containers in the background without forcing build
+## up: starts all containers in the background without forcing build 
 up:
 	@echo "Starting Docker images..."
 	docker-compose up -d

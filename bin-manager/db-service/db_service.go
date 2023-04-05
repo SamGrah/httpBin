@@ -138,8 +138,7 @@ func CreateNewBin(binId string) error {
 			return err
 	}
 
-	// var emptyHttpRequestsSlice []HttpRequestDetails
-	emptyHttpRequestsSlice := make(BinContents, 0)
+	emptyHttpRequestsSlice := make([]HttpRequestContents, 0)
   
 	newBin := &Bin{
 		BinId: binId, 
@@ -222,10 +221,10 @@ func GetBinContents(binId string) (*[]HttpRequestContents, error) {
 		return nil, err
 	}
 
-	var result Bin
+	var bin Bin
 	filter := bson.D{primitive.E{Key: "binid", Value: binId}}
 
-	err = connDetails.Collection.FindOne(context.TODO(), filter).Decode(&result)
+	err = connDetails.Collection.FindOne(context.TODO(), filter).Decode(&bin)
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
 			fmt.Printf("error fetching contents for bin: %s", binId)
@@ -237,5 +236,5 @@ func GetBinContents(binId string) (*[]HttpRequestContents, error) {
 	}
 
 	closeDbConn(connDetails.Client)
-	return &result.BinContents, nil
+	return bin.BinContents, nil
 }

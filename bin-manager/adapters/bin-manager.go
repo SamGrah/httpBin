@@ -26,7 +26,8 @@ func (s *BinMgmtServer) GenerateNewBin(ctx context.Context, params *binManager.P
 }
 
 func (s *BinMgmtServer) LogRequestToBin(ctx context.Context, params *binManager.LogRequestParams) (*binManager.LogRequestResponse, error) {
-	err := services.LogRequestToBin(params.BinId, params.RequestToLog)
+	var httpRequestContents db_service.HttpRequestContents = params.RequestToLog
+	err := services.LogRequestToBin(params.BinId, &httpRequestContents)
 
 	if err != nil {
 		log.Fatal("failed to log request to bin", err)
@@ -36,4 +37,15 @@ func (s *BinMgmtServer) LogRequestToBin(ctx context.Context, params *binManager.
 	return &payload, err 
 }
 
-// func (s *BinMgmtServer)
+func (s *BinMgmtServer) FetchRequestsFromBin(ctx context.Context, params *binManager.FetchBinContentsParams) (*binManager.FetchBinContentsResponse, error) {
+	binId := params.BinId	
+	
+	binContents, err := services.FetchRequestsFromBin(binId)
+	if err != nil {
+		log.Fatal("failed to fetch bin request history")
+	}
+
+	payload := binManager.FetchBinContentsResponse{
+		BinContents: []binManager.HttpRequest(*binContents),
+	}
+}
