@@ -1,12 +1,20 @@
 package models
 
-type HttpRequests struct {
-	LoggedRequests []string
+type BinId struct {
+	BinId string
+}
+
+type HttpRequest struct {
+	Contents map[string]string
+}
+
+type Contents struct {
+	LoggedRequests []*HttpRequest
 }
 
 type Bin struct {
-	BinId string
-	Contents *HttpRequests 
+	BinId
+	Contents []*HttpRequest	
 }
 
 type BinMgmtRepository interface {
