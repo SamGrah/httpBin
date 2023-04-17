@@ -1,7 +1,6 @@
 version: "3"
 
 services:
-
   frontend:
     build:
       context: ./../frontend
@@ -9,10 +8,10 @@ services:
     ports:
       - "3000:3000"
 
-  service-bridge:
+  api-gateway:
     build:
-      context: ./../service-bridge
-      dockerfile: ./../service-bridge/service-bridge.Dockerfile
+      context: ./../api-gateway
+      dockerfile: ./../api-gateway/api-gateway.Dockerfile
     depends_on:
       - bin-manager
     ports:
@@ -35,7 +34,7 @@ services:
 
   mongo:
     hostname: mongo_db
-    image: 'mongo:latest'
+    image: "mongo:latest"
     ports:
       - "27017:27017"
     environment:
@@ -43,4 +42,4 @@ services:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: password
     volumes:
-      - ./db-data/mongo/:/data/db 
+      - ./db-data/mongo/:/data/db

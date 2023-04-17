@@ -1,4 +1,4 @@
-SERVICE_BRIDGE_BINARY=serviceBridgeApp
+SERVICE_BRIDGE_BINARY=apiGatewayApp
 BIN_MANAGER_BINARY=binManagerApp
 
 ## up: starts all containers in the background without forcing build 	
@@ -30,7 +30,7 @@ build_frontend:
 ## build_service_bridge: builds the service bridge binary as a linux executable
 build_service_bridge:
 	@echo "Building service bridge binary..."
-	cd ../service-bridge && env GOOS=linux CGO_ENABLED=0 go build -o ${SERVICE_BRIDGE_BINARY} server.go
+	cd ../api-gateway && env GOOS=linux CGO_ENABLED=0 go build -o ${SERVICE_BRIDGE_BINARY} server.go
 	@echo "Done!"
 
 ## build_bin_manager: builds the service bridge binary as a linux executable
