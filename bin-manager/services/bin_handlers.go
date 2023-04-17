@@ -74,6 +74,7 @@ func LogRequestToBin(binId string, requestDetails *db_service.HttpRequestContent
 
 func FetchRequestsFromBin(binId string) (*[]db_service.HttpRequestContents, error) {
 	binContents, err := db_service.GetBinContents(binId)
+	log.Println(binContents)
 	if err != nil {
 		log.Fatal(err)
 		emptySlice := make([]db_service.HttpRequestContents, 0)

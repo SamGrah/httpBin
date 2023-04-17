@@ -7,7 +7,7 @@
       "path": "project"
     },
     {
-      "path": "service-bridge"
+      "path": "api-gateway"
     },
     {
       "path": "bin-manager"

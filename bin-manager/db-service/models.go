@@ -17,6 +17,6 @@ type HttpRequestDetails struct {
 }
 
 type Bin struct {
-	BinId string	
-	BinContents *[]HttpRequestContents
+	BinId   string                `bson:"binid"`
+	Requets []HttpRequestContents `bson:"requests"`
 }

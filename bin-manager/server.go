@@ -14,6 +14,7 @@ import (
 
 const gpcPort = "65535"
 
+// TODO: replace log.Fatal with a proper error handling
 func main() {
 	db_service.Init()
 

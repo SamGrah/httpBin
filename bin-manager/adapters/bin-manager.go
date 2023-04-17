@@ -5,7 +5,7 @@ import (
 	"log"
 
 	db_service "bin-manager/db-service"
-	"bin-manager/generated/adapters"
+	binManager "bin-manager/generated/adapters"
 	"bin-manager/services"
 )
 
@@ -14,15 +14,15 @@ type BinMgmtServer struct {
 }
 
 func (s *BinMgmtServer) GenerateNewBin(ctx context.Context, params *binManager.Params) (*binManager.NewBinResponse, error) {
-	binId, err := services.CreateNewBin() 
+	binId, err := services.CreateNewBin()
 	if err != nil {
-		log.Fatal("failed to create a new bin id", err) 
+		log.Fatal("failed to create a new bin id", err)
 	}
-	
+
 	payload := binManager.NewBinResponse{
 		BinId: binId,
 	}
-	return &payload, nil 
+	return &payload, nil
 }
 
 func (s *BinMgmtServer) LogRequestToBin(ctx context.Context, params *binManager.LogRequestParams) (*binManager.LogRequestResponse, error) {
@@ -34,18 +34,27 @@ func (s *BinMgmtServer) LogRequestToBin(ctx context.Context, params *binManager.
 	}
 
 	payload := binManager.LogRequestResponse{}
-	return &payload, err 
+	return &payload, nil
 }
 
-func (s *BinMgmtServer) FetchRequestsFromBin(ctx context.Context, params *binManager.FetchBinContentsParams) (*binManager.FetchBinContentsResponse, error) {
-	binId := params.BinId	
-	
+func (s *BinMgmtServer) FetchBinContents(ctx context.Context, params *binManager.FetchBinContentsParams) (*binManager.FetchBinContentsResponse, error) {
+	binId := params.BinId
+
 	binContents, err := services.FetchRequestsFromBin(binId)
 	if err != nil {
 		log.Fatal("failed to fetch bin request history")
 	}
 
-	payload := binManager.FetchBinContentsResponse{
-		BinContents: []binManager.HttpRequest(*binContents),
+	binContentsResponse := []*binManager.HttpRequest{}
+	for _, requestContents := range *binContents {
+		binContentsResponse = append(binContentsResponse, &binManager.HttpRequest{
+			Contents: requestContents,
+		})
 	}
+
+	payload := binManager.FetchBinContentsResponse{
+		BinContents: binContentsResponse,
+	}
+
+	return &payload, nil
 }
