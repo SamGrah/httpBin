@@ -50,6 +50,7 @@ func (r *BinManagerRepo) FetchBinContents(binId string) (*binManager.FetchBinCon
 		log.Fatalf("Error when calling FetchBinContents: %s", err)
 		return nil, err
 	}
+	log.Printf("Bin Contents: %+v", response)
 
 	return response, nil
 }

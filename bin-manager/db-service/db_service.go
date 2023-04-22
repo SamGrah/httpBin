@@ -231,11 +231,10 @@ func GetBinContents(binId string) (*[]HttpRequestContents, error) {
 		} else {
 			log.Fatal(err)
 		}
-		log.Printf("Fetched bin %s contents: %+v", bin.BinId, bin.Requets)
-
 		return nil, err
 	}
 
+	log.Printf("Fetched bin %s contents: %+v", bin.BinId, bin.Requets)
 	closeDbConn(connDetails.Client)
 	return &bin.Requets, nil
 }

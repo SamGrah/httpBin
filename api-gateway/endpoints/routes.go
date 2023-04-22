@@ -18,16 +18,16 @@ func Routes(h *Handlers) http.Handler {
 
 	router.Use(cors.Handler(cors.Options{
 		AllowedOrigins: []string{"https://*", "http://*"},
-		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
-		AllowedHeaders: []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
+		AllowedMethods: []string{"HEAD", "GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"},
+		AllowedHeaders: []string{"*"},
 		ExposedHeaders: []string{"Link"},
 		AllowCredentials: true,
 		MaxAge: 300,
 	}))
 	
 	router.Post("/new-bin", h.BinMgmtHandler.CreateNewBin)
-	router.Post("/bin/{binId}", h.BinMgmtHandler.LogRequest)
-	router.Get("/view-bin/{binId}", h.BinMgmtHandler.FetchBinContents)
+	router.HandleFunc("/bin/{binId}", h.BinMgmtHandler.LogRequest)
+	router.Get("/bin-contents/{binId}", h.BinMgmtHandler.FetchBinContents)
 
 	return router
 }

@@ -1,5 +1,5 @@
 <script>
-  export let bin;
+  export let bin = 'default value overwritten by parent' 
 </script>
 <p class="text-center font-bold text-3xl">Execute Requests With The Following Code</p>
 <div class="mt-4 w-4/6"><b>cURL</b>

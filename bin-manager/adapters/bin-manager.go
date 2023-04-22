@@ -45,7 +45,7 @@ func (s *BinMgmtServer) FetchBinContents(ctx context.Context, params *binManager
 		log.Fatal("failed to fetch bin request history")
 	}
 
-	binContentsResponse := []*binManager.HttpRequest{}
+	binContentsResponse := make([]*binManager.HttpRequest, 0)
 	for _, requestContents := range *binContents {
 		binContentsResponse = append(binContentsResponse, &binManager.HttpRequest{
 			Contents: requestContents,
