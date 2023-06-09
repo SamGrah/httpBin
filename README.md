@@ -1,3 +1,4 @@
+<!-- TODO: Add binaries to .gitignore -->
 <!-- TODO: Add webhook service in TS Node -->
 <!-- TODO: Add unit tests to all services  -->
 <!-- TODO: Add integration tests to all services -->
