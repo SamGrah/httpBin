@@ -9,23 +9,10 @@ It's main use is to test that webhooks are configured and working as expected.
 
 
 ## Instructions
-First, build all necessary docker images. Docker must be installed and running in the environment.
-```
-> make up_build
-```
-
-Run all services (including the frontend)
-```
-> make up
-```
-
-Teardown and destroy all containers
-```
-> make down
-```
+*ADD INSTRUCTIONS*
 
 ## Tech Stack
-SvelteKit - Frontend<br />
-Go & gRPC - Service Code<br />
+Svelte    - Frontend<br />
+TS Node   - Service Code<br />
 MongoDB   - Requests Datastore<br />
 Docker    - Deployment<br />
