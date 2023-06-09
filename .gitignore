@@ -1,6 +1,0 @@
-node_modules
-dist
-mongo
-.gitcredentials
-.DS_Store
-.env
