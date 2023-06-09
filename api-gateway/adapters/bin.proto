@@ -1,4 +1,6 @@
 /*
+// TODO: Add to script generate code from this bin-manager protofile
+
 Execute generate code from this protofile with the following command line:
 protoc --go_out=./generated --go_opt=paths=source_relative --go-grpc_out=./generated --go-grpc_opt=paths=source_relative adapters/bin.proto
 */
