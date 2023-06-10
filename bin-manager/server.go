@@ -5,9 +5,9 @@ import (
 	"log"
 	"net"
 
-	db_service "bin-manager/db-service"
-	"bin-manager/adapters"
-	"bin-manager/generated/adapters"
+	"bin-manager/internal/adapters"
+	db_service "bin-manager/internal/db-service"
+	binManagerGRPC "bin-manager/pkg/generated"
 
 	"google.golang.org/grpc"
 )
@@ -27,7 +27,7 @@ func main() {
 	grpcServer := grpc.NewServer()
 
 	srv := adapters.BinMgmtServer{}
-	binManager.RegisterBinManagerServer(grpcServer, &srv)
+	binManagerGRPC.RegisterBinManagerServer(grpcServer, &srv)
 
 	fmt.Printf("Starting Bin Management service on port %s\n", gpcPort)
 	if err := grpcServer.Serve(lis); err != nil {
