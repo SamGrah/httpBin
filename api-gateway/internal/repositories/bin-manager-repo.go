@@ -4,21 +4,21 @@ import (
 	"context"
 	"log"
 
-	binManager "api-gateway/generated/adapters"
+	binManagerGRPC "bin-manager/pkg/generated"
 )
 
 type BinManagerRepo struct {
-	clientConn binManager.BinManagerClient
+	clientConn binManagerGRPC.BinManagerClient
 }
 
-func NewBinManagerRepo(clientConn binManager.BinManagerClient) *BinManagerRepo {
+func NewBinManagerRepo(clientConn binManagerGRPC.BinManagerClient) *BinManagerRepo {
 	return &BinManagerRepo{
 		clientConn: clientConn,
 	}
 }
 
-func (r *BinManagerRepo) CreateNewBin() (*binManager.NewBinResponse, error) {
-	response, err := r.clientConn.GenerateNewBin(context.Background(), &binManager.Params{})
+func (r *BinManagerRepo) CreateNewBin() (*binManagerGRPC.NewBinResponse, error) {
+	response, err := r.clientConn.GenerateNewBin(context.Background(), &binManagerGRPC.Params{})
 	if err != nil {
 		log.Fatalf("Error when calling GenerateNewBin: %s", err)
 		return nil, err
@@ -29,7 +29,7 @@ func (r *BinManagerRepo) CreateNewBin() (*binManager.NewBinResponse, error) {
 }
 
 func (r *BinManagerRepo) LogRequest(binId string, requestContents map[string]string) error {
-	httpRequestDetails := &binManager.LogRequestParams{
+	httpRequestDetails := &binManagerGRPC.LogRequestParams{
 		BinId:        binId,
 		RequestToLog: requestContents,
 	}
@@ -42,8 +42,8 @@ func (r *BinManagerRepo) LogRequest(binId string, requestContents map[string]str
 	return nil
 }
 
-func (r *BinManagerRepo) FetchBinContents(binId string) (*binManager.FetchBinContentsResponse, error) {
-	response, err := r.clientConn.FetchBinContents(context.Background(), &binManager.FetchBinContentsParams{
+func (r *BinManagerRepo) FetchBinContents(binId string) (*binManagerGRPC.FetchBinContentsResponse, error) {
+	response, err := r.clientConn.FetchBinContents(context.Background(), &binManagerGRPC.FetchBinContentsParams{
 		BinId: binId,
 	})
 	if err != nil {

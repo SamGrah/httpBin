@@ -3,7 +3,7 @@ package endpoints
 import (
 	"net/http"
 
-	"api-gateway/controllers"
+	"api-gateway/internal/controllers"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/cors"
