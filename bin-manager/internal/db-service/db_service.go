@@ -137,11 +137,11 @@ func CreateNewBin(binId string) error {
 		return err
 	}
 
-	emptyHttpRequestsSlice := make([]HttpRequestContents, 0)
+	emptyHttpRequestsSlice := make([]HttpRequest, 0)
 
 	newBin := &Bin{
-		BinId:   binId,
-		Requets: emptyHttpRequestsSlice,
+		BinId:    binId,
+		Requests: emptyHttpRequestsSlice,
 	}
 	insertResult, err := connDetails.Collection.InsertOne(context.Background(), newBin)
 	if err != nil {
@@ -182,7 +182,7 @@ func BinIdExists(binId string) (bool, error) {
 	return binExists, nil
 }
 
-func AddRequestToBin(binId string, content HttpRequestContents) error {
+func AddRequestToBin(binId string, request HttpRequest) error {
 	connDetails, err := getDbCollectionDetails("httpBin", "bins")
 	if err != nil {
 		fmt.Println("Failed to fetch Db collection")
@@ -192,7 +192,13 @@ func AddRequestToBin(binId string, content HttpRequestContents) error {
 
 	filter := bson.D{{Key: "binid", Value: binId}}
 	update := bson.M{
-		"$push": bson.M{"requests": content},
+		"$push": bson.M{
+			"requests": bson.M{
+				"hostIp": request.HostIp,
+				"recieved": request.Recieved,
+				"contents": request.Contents,
+			},
+		},
 	}
 
 	_, err = connDetails.Collection.UpdateOne(context.TODO(), filter, update)
@@ -206,7 +212,7 @@ func AddRequestToBin(binId string, content HttpRequestContents) error {
 	return nil
 }
 
-func GetBinContents(binId string) (*[]HttpRequestContents, error) {
+func GetBinContents(binId string) (*[]HttpRequest, error) {
 	connDetails, err := getDbCollectionDetails("httpBin", "bins")
 	if err != nil {
 		fmt.Println("Failed to fetch Db collection")
@@ -234,7 +240,7 @@ func GetBinContents(binId string) (*[]HttpRequestContents, error) {
 		return nil, err
 	}
 
-	log.Printf("Fetched bin %s contents: %+v", bin.BinId, bin.Requets)
+	log.Printf("Fetched bin %s contents: %+v", bin.BinId, bin.Requests)
 	closeDbConn(connDetails.Client)
-	return &bin.Requets, nil
+	return &bin.Requests, nil
 }

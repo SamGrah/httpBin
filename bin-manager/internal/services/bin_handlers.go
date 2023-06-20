@@ -51,7 +51,7 @@ func generateNewBinId() string {
 	return binId
 }
 
-func LogRequestToBin(binId string, requestDetails *db_service.HttpRequestContents) (error) {
+func LogRequestToBin(binId string, requestDetails *db_service.HttpRequest) (error) {
 	binInDb, err := db_service.BinIdExists(binId)
 	if err != nil {
 		log.Fatal(err)
@@ -72,11 +72,11 @@ func LogRequestToBin(binId string, requestDetails *db_service.HttpRequestContent
 	return nil
 }
 
-func FetchRequestsFromBin(binId string) (*[]db_service.HttpRequestContents, error) {
+func FetchRequestsFromBin(binId string) (*[]db_service.HttpRequest, error) {
 	binContents, err := db_service.GetBinContents(binId)
 	if err != nil {
 		log.Fatal(err)
-		emptySlice := make([]db_service.HttpRequestContents, 0)
+		emptySlice := make([]db_service.HttpRequest, 0)
 		return &emptySlice, err
 	}
 

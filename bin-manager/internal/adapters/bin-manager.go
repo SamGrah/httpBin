@@ -5,8 +5,8 @@ import (
 	"log"
 
 	db_service "bin-manager/internal/db-service"
-	binManager "bin-manager/pkg/generated"
 	"bin-manager/internal/services"
+	binManager "bin-manager/pkg/generated"
 )
 
 type BinMgmtServer struct {
@@ -26,8 +26,13 @@ func (s *BinMgmtServer) GenerateNewBin(ctx context.Context, params *binManager.P
 }
 
 func (s *BinMgmtServer) LogRequestToBin(ctx context.Context, params *binManager.LogRequestParams) (*binManager.LogRequestResponse, error) {
-	var httpRequestContents db_service.HttpRequestContents = params.RequestToLog
-	err := services.LogRequestToBin(params.BinId, &httpRequestContents)
+	var httpRequest *db_service.HttpRequest = &db_service.HttpRequest{
+		HostIp: params.RequestToLog.HostIp,
+		Recieved: params.RequestToLog.Recieved,
+		Contents: params.RequestToLog.Contents,
+	}
+
+	err := services.LogRequestToBin(params.BinId, httpRequest)
 
 	if err != nil {
 		log.Fatal("failed to log request to bin", err)
@@ -48,7 +53,9 @@ func (s *BinMgmtServer) FetchBinContents(ctx context.Context, params *binManager
 	binContentsResponse := make([]*binManager.HttpRequest, 0)
 	for _, requestContents := range *binContents {
 		binContentsResponse = append(binContentsResponse, &binManager.HttpRequest{
-			Contents: requestContents,
+			HostIp: requestContents.HostIp,
+			Recieved: requestContents.Recieved,
+			Contents: requestContents.Contents,
 		})
 	}
 

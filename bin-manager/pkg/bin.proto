@@ -5,9 +5,17 @@ protoc --go_out=./generated --go_opt=paths=source_relative --go-grpc_out=./gener
 syntax = "proto3";
 package binManager;
 
+import "google/protobuf/timestamp.proto";
+
 option go_package = "/binManager";
 
 message Params {}
+
+message HttpRequest {
+  string hostIp = 1; 
+  google.protobuf.Timestamp recieved = 2;
+  map<string, string> contents = 3;
+}
 
 message NewBinResponse {
   string binId = 1;
@@ -15,17 +23,13 @@ message NewBinResponse {
 
 message LogRequestParams {
   string binId = 1;
-  map<string, string> requestToLog = 2;
+  HttpRequest requestToLog = 2;
 }
 
 message LogRequestResponse {}
 
 message FetchBinContentsParams {
   string binId = 1;
-}
-
-message HttpRequest {
-  map<string, string> contents = 1;
 }
 
 message FetchBinContentsResponse {
