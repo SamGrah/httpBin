@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 type BinMgmtBaseHandler struct {
@@ -48,8 +49,9 @@ func (h *BinMgmtBaseHandler) LogRequest(w http.ResponseWriter, r *http.Request) 
 	}
 
 	binId := chi.URLParam(r, "binId")
-
-	err := h.BinMgmtRepo.LogRequest(binId, requestDetails)
+	hostname := r.RemoteAddr 
+	recieved := timestamppb.Now()
+	err := h.BinMgmtRepo.LogRequest(binId, hostname, recieved, requestDetails)
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -5,6 +5,8 @@ import (
 	"log"
 
 	binManagerGRPC "bin-manager/pkg/generated"
+
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 type BinManagerRepo struct {
@@ -28,10 +30,14 @@ func (r *BinManagerRepo) CreateNewBin() (*binManagerGRPC.NewBinResponse, error) 
 	return response, nil
 }
 
-func (r *BinManagerRepo) LogRequest(binId string, requestContents map[string]string) error {
+func (r *BinManagerRepo) LogRequest(binId string, hostname string, recieved *timestamppb.Timestamp, contents map[string]string) error {
 	httpRequestDetails := &binManagerGRPC.LogRequestParams{
-		BinId:        binId,
-		RequestToLog: requestContents,
+		BinId: binId,
+		RequestToLog: &binManagerGRPC.HttpRequest{
+			HostIp: hostname,
+			Recieved: recieved,
+			Contents: contents,
+		},
 	}
 
 	_, err := r.clientConn.LogRequestToBin(context.Background(), httpRequestDetails)
