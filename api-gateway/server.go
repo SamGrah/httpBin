@@ -4,11 +4,11 @@ import (
 	"log"
 	"net/http"
 
-	adapters "api-gateway/adapters"
-	"api-gateway/controllers"
-	"api-gateway/repositories"
+	binManager "bin-manager/pkg"
 
-	html "api-gateway/endpoints"
+	"api-gateway/internal/controllers"
+	"api-gateway/internal/repositories"
+	html "api-gateway/internal/endpoints"
 )
 
 const (
@@ -18,7 +18,7 @@ const (
 )
 
 func main() {
-	binManagerSrv := adapters.ConnectToBinMgmtSrv()
+	binManagerSrv := binManager.ConnectToBinMgmtSrv()
 	defer binManagerSrv.CloseConn()
 
 	binManagerRepo := repositories.NewBinManagerRepo(*binManagerSrv.Client)
