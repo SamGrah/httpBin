@@ -4,9 +4,15 @@ import (
 	"context"
 	"log"
 
+<<<<<<< HEAD:bin-manager/internal/adapters/bin-manager.go
 	db_service "bin-manager/internal/db-service"
 	"bin-manager/internal/services"
 	binManager "bin-manager/pkg/generated"
+=======
+	db_service "bin-manager/db-service"
+	binManager "bin-manager/generated/adapters"
+	"bin-manager/services"
+>>>>>>> 0f101632433d7e39c16f7177f06a16a39a70e8fa:bin-manager/adapters/bin-manager.go
 )
 
 type BinMgmtServer struct {

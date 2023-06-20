@@ -14,7 +14,11 @@
     }
   ],
   "settings": {
+<<<<<<< HEAD
     "workbench.colorTheme": "Bearded Theme HC Ebony",
+=======
+    "workbench.colorTheme": "Svelte Dark",
+>>>>>>> 0f101632433d7e39c16f7177f06a16a39a70e8fa
     "theme-by-language.useGlobalConfigOnly": false
   }
 }

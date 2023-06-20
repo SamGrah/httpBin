@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"api-gateway/internal/repositories"
+	"api-gateway/repositories"
 	"io"
 	"log"
 	"net/http"

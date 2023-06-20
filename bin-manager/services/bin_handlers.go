@@ -7,7 +7,7 @@ import (
 	"math/rand"
 	"time"
 
-	"bin-manager/internal/db-service"
+	"bin-manager/db-service"
 )
 
 func CreateNewBin() (string, error) {

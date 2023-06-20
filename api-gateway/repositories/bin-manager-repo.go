@@ -4,23 +4,27 @@ import (
 	"context"
 	"log"
 
+<<<<<<< HEAD:api-gateway/internal/repositories/bin-manager-repo.go
 	binManagerGRPC "bin-manager/pkg/generated"
 
 	"google.golang.org/protobuf/types/known/timestamppb"
+=======
+	binManager "api-gateway/generated/adapters"
+>>>>>>> 0f101632433d7e39c16f7177f06a16a39a70e8fa:api-gateway/repositories/bin-manager-repo.go
 )
 
 type BinManagerRepo struct {
-	clientConn binManagerGRPC.BinManagerClient
+	clientConn binManager.BinManagerClient
 }
 
-func NewBinManagerRepo(clientConn binManagerGRPC.BinManagerClient) *BinManagerRepo {
+func NewBinManagerRepo(clientConn binManager.BinManagerClient) *BinManagerRepo {
 	return &BinManagerRepo{
 		clientConn: clientConn,
 	}
 }
 
-func (r *BinManagerRepo) CreateNewBin() (*binManagerGRPC.NewBinResponse, error) {
-	response, err := r.clientConn.GenerateNewBin(context.Background(), &binManagerGRPC.Params{})
+func (r *BinManagerRepo) CreateNewBin() (*binManager.NewBinResponse, error) {
+	response, err := r.clientConn.GenerateNewBin(context.Background(), &binManager.Params{})
 	if err != nil {
 		log.Fatalf("Error when calling GenerateNewBin: %s", err)
 		return nil, err
@@ -30,6 +34,7 @@ func (r *BinManagerRepo) CreateNewBin() (*binManagerGRPC.NewBinResponse, error) 
 	return response, nil
 }
 
+<<<<<<< HEAD:api-gateway/internal/repositories/bin-manager-repo.go
 func (r *BinManagerRepo) LogRequest(binId string, hostname string, recieved *timestamppb.Timestamp, contents map[string]string) error {
 	httpRequestDetails := &binManagerGRPC.LogRequestParams{
 		BinId: binId,
@@ -38,6 +43,12 @@ func (r *BinManagerRepo) LogRequest(binId string, hostname string, recieved *tim
 			Recieved: recieved,
 			Contents: contents,
 		},
+=======
+func (r *BinManagerRepo) LogRequest(binId string, requestContents map[string]string) error {
+	httpRequestDetails := &binManager.LogRequestParams{
+		BinId:        binId,
+		RequestToLog: requestContents,
+>>>>>>> 0f101632433d7e39c16f7177f06a16a39a70e8fa:api-gateway/repositories/bin-manager-repo.go
 	}
 
 	_, err := r.clientConn.LogRequestToBin(context.Background(), httpRequestDetails)
@@ -48,8 +59,8 @@ func (r *BinManagerRepo) LogRequest(binId string, hostname string, recieved *tim
 	return nil
 }
 
-func (r *BinManagerRepo) FetchBinContents(binId string) (*binManagerGRPC.FetchBinContentsResponse, error) {
-	response, err := r.clientConn.FetchBinContents(context.Background(), &binManagerGRPC.FetchBinContentsParams{
+func (r *BinManagerRepo) FetchBinContents(binId string) (*binManager.FetchBinContentsResponse, error) {
+	response, err := r.clientConn.FetchBinContents(context.Background(), &binManager.FetchBinContentsParams{
 		BinId: binId,
 	})
 	if err != nil {
