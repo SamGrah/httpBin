@@ -28,10 +28,10 @@ func (r *BinManagerRepo) CreateNewBin() (*binManagerGRPC.NewBinResponse, error) 
 	return response, nil
 }
 
-func (r *BinManagerRepo) LogRequest(binId string, requestContents map[string]string) error {
+func (r *BinManagerRepo) LogRequest(binId string, httpRequest *binManagerGRPC.HttpRequest) error {
 	httpRequestDetails := &binManagerGRPC.LogRequestParams{
 		BinId:        binId,
-		RequestToLog: requestContents,
+		RequestToLog: httpRequest,
 	}
 
 	_, err := r.clientConn.LogRequestToBin(context.Background(), httpRequestDetails)

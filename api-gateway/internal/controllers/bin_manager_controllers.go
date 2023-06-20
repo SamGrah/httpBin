@@ -2,11 +2,13 @@ package controllers
 
 import (
 	"api-gateway/internal/repositories"
+	binManager "bin-manager/pkg/generated"
 	"io"
 	"log"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 type BinMgmtBaseHandler struct {
@@ -48,8 +50,14 @@ func (h *BinMgmtBaseHandler) LogRequest(w http.ResponseWriter, r *http.Request) 
 	}
 
 	binId := chi.URLParam(r, "binId")
+	hostIp := r.RemoteAddr
+	timestamp := timestamppb.Now()
 
-	err := h.BinMgmtRepo.LogRequest(binId, requestDetails)
+	err := h.BinMgmtRepo.LogRequest(binId, &binManager.HttpRequest{
+			HostIp: hostIp,
+			Recieved: timestamp, 
+			Contents: requestDetails,
+	}, )
 	if err != nil {
 		log.Fatal(err)
 	}
