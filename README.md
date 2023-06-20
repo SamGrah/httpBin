@@ -1,4 +1,11 @@
-# httpBin - Webhook Testing Tool
+<!-- TODO: Add binaries to .gitignore -->
+<!-- TODO: Add webhook service in TS Node -->
+<!-- TODO: Add unit tests to all services  -->
+<!-- TODO: Add integration tests to all services -->
+<!-- TODO: Add E2E tests to all services -->
+<!-- TODO: Convert to Postgres DB  -->
+<!-- TODO: Figure out how to purge all unused CSS for commits -->
+<!-- TODO: Setup basic merge requirement for build step in Github Actions -->
 
 ## Description
 
@@ -14,19 +21,19 @@ It's main use is to test that webhooks are configured and working as expected.
 
 First, build all necessary docker images. Docker must be installed and running in the environment.
 
-```shell
+```
 > make up_build
 ```
 
 Run all services (including the frontend)
 
-```shell
+```
 > make up
 ```
 
 Teardown and destroy all containers
 
-```shell
+```
 > make down
 ```
 
@@ -36,17 +43,3 @@ SvelteKit - Frontend<br />
 Go & gRPC - Service Code<br />
 MongoDB - Requests Datastore<br />
 Docker - Deployment<br />
-
-<!-- TODO: Add proper error handling -->
-<!-- TODO: Convert grpc errors into http status codes / responses -->
-<!-- TODO: Add webhook service in TS Node -->
-<!-- TODO: Add unit tests to all services  -->
-<!-- TODO: Add integration tests to all services -->
-<!-- TODO: Add E2E tests to all services -->
-<!-- TODO: Add secrets mgmt -->
-<!-- TODO: Add login ??? -->
-<!-- TODO: Add authenticated endpoints ??? -->
-<!-- TODO: Convert to Postgres DB  -->
-<!-- TODO: Figure out how to purge all unused CSS for commits -->
-<!-- TODO: Create Github Workflow definition -->
-<!-- TODO: Setup basic GH merge requirement for build step -->
