@@ -22,10 +22,10 @@ down:
 	@echo "Done!"
 
 ## build_frontend: builds the frontend as JS  
-build_frontend:
-	@echo "Building frontend..."
-	cd ../frontend &&  
-	@echo "Done!"
+# build_frontend:
+# 	@echo "Building frontend..."
+# 	cd ../frontend &&  
+# 	@echo "Done!"
 
 ## build_service_bridge: builds the service bridge binary as a linux executable
 build_service_bridge:

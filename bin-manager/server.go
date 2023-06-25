@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"os"
 
 	"bin-manager/internal/adapters"
 	db_service "bin-manager/internal/db-service"
@@ -14,8 +15,8 @@ import (
 
 const gpcPort = "65535"
 
-// TODO: replace log.Fatal with a proper error handling
 func main() {
+	log.SetOutput(os.Stdout)
 	db_service.Init()
 
 	// start grpc server and establish a tcp listener for it

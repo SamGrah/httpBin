@@ -2,11 +2,11 @@ package adapters
 
 import (
 	"context"
-	"log"
 
 	db_service "bin-manager/internal/db-service"
 	"bin-manager/internal/services"
 	binManager "bin-manager/pkg/generated"
+	"api-gateway/pkg/utils"
 )
 
 type BinMgmtServer struct {
@@ -16,7 +16,8 @@ type BinMgmtServer struct {
 func (s *BinMgmtServer) GenerateNewBin(ctx context.Context, params *binManager.Params) (*binManager.NewBinResponse, error) {
 	binId, err := services.CreateNewBin()
 	if err != nil {
-		log.Fatal("failed to create a new bin id", err)
+		utils.LogError("failed to create a new bin id", err)
+		return nil, err 
 	}
 
 	payload := binManager.NewBinResponse{
@@ -35,7 +36,8 @@ func (s *BinMgmtServer) LogRequestToBin(ctx context.Context, params *binManager.
 	err := services.LogRequestToBin(params.BinId, httpRequest)
 
 	if err != nil {
-		log.Fatal("failed to log request to bin", err)
+		utils.LogError("failed to log request to bin", err)
+		return nil, err
 	}
 
 	payload := binManager.LogRequestResponse{}
@@ -47,7 +49,8 @@ func (s *BinMgmtServer) FetchBinContents(ctx context.Context, params *binManager
 
 	binContents, err := services.FetchRequestsFromBin(binId)
 	if err != nil {
-		log.Fatal("failed to fetch bin request history")
+		utils.LogError("failed to fetch bin request history", err)
+		return nil, err
 	}
 
 	binContentsResponse := make([]*binManager.HttpRequest, 0)

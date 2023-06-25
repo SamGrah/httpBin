@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 
+	"api-gateway/pkg/utils"
 	binManagerGRPC "bin-manager/pkg/generated"
 )
 
@@ -20,10 +21,10 @@ func NewBinManagerRepo(clientConn binManagerGRPC.BinManagerClient) *BinManagerRe
 func (r *BinManagerRepo) CreateNewBin() (*binManagerGRPC.NewBinResponse, error) {
 	response, err := r.clientConn.GenerateNewBin(context.Background(), &binManagerGRPC.Params{})
 	if err != nil {
-		log.Fatalf("Error when calling GenerateNewBin: %s", err)
+		utils.LogError("Error when calling GenerateNewBin", err)
 		return nil, err
 	}
-	log.Printf("Response from server: %s", response.BinId)
+	log.Printf("New bin created: %s", response.BinId)
 
 	return response, nil
 }
@@ -34,11 +35,13 @@ func (r *BinManagerRepo) LogRequest(binId string, httpRequest *binManagerGRPC.Ht
 		RequestToLog: httpRequest,
 	}
 
-	_, err := r.clientConn.LogRequestToBin(context.Background(), httpRequestDetails)
+	response , err := r.clientConn.LogRequestToBin(context.Background(), httpRequestDetails)
 	if err != nil {
-		log.Fatalf("Error when calling LogRequest: %s", err)
+		utils.LogError("Error when calling LogRequest", err)
 		return err
 	}
+	log.Printf("Request logged to bin %s: %+v", binId, response)
+
 	return nil
 }
 
@@ -47,10 +50,10 @@ func (r *BinManagerRepo) FetchBinContents(binId string) (*binManagerGRPC.FetchBi
 		BinId: binId,
 	})
 	if err != nil {
-		log.Fatalf("Error when calling FetchBinContents: %s", err)
+		utils.LogError("Error when calling FetchBinContents", err)
 		return nil, err
 	}
-	log.Printf("Bin Contents: %+v", response)
+	log.Printf("Bin contents fetched: %+v", response)
 
 	return response, nil
 }
