@@ -18,6 +18,6 @@ mongo
 
 # httpBin executables
 binManagerApp
-apiGateWayApp
+apiGatewayApp
 ./bin-manager
 ./api-gateway
