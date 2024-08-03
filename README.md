@@ -12,7 +12,7 @@ It's main use is to test that webhooks are configured and working as expected.
 
 There are multiple implementations of this tool, each with its own dedicated branch.
 
-### MVC-Go-HTMX
+#### MVC-Go-HTMX
 
 > Current Working Branch
 The `MVC-Go-HTMX` branch contains a model-view-controller implementation of the
