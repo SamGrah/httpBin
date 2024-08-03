@@ -16,6 +16,11 @@ mongo
 # ???
 .env
 
-# httpBin
+# httpBin executables
 binManagerApp
-apiGateWayApp
+apiGatewayApp
+./bin-manager
+./api-gateway
+
+# direnv env vars tool
+.envrc

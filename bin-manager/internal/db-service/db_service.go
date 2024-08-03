@@ -2,6 +2,7 @@ package db_service
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log"
 
@@ -10,6 +11,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/x/bsonx"
+
+	"api-gateway/pkg/utils"
 )
 
 const dbPort = "27017"
@@ -19,12 +22,13 @@ func Init() error {
 	fmt.Printf("Connecting to MongoDB...")
 	dbClient, err := getDbCollectionDetails("httpBin", "bins")
 	if err != nil {
-		log.Fatal(err)
+		utils.LogError("db error", err)
 		return err
 	}
 
 	expireIndex, err := expireIndexExists(dbClient.Collection)
 	if err != nil {
+		utils.LogError("db error", err)
 		log.Fatal(err)
 		return err
 	}
@@ -32,7 +36,7 @@ func Init() error {
 	if !expireIndex {
 		err = createExpirationIndex(dbClient.Collection)
 		if err != nil {
-			fmt.Println("Failed to create expiration index")
+			utils.LogError("failed to create expiration index", err)
 			log.Fatal(err)
 			return err
 		}
@@ -50,7 +54,7 @@ func createDbConn() (*mongo.Client, error) {
 	// Connect to MongoDB
 	client, err := mongo.Connect(context.TODO(), clientOptions)
 	if err != nil {
-		fmt.Println("Failed MongoDB connection")
+		utils.LogError("failed to connected to MongoDB", err)
 		log.Fatal(err)
 		return nil, err
 	}
@@ -70,8 +74,8 @@ func createDbConn() (*mongo.Client, error) {
 
 func closeDbConn(client *mongo.Client) {
 	if err := client.Disconnect(context.Background()); err != nil {
-		log.Fatal(err)
 		fmt.Println("Error encountered when disconnecting from MongoDB!")
+		log.Fatal(err)
 	}
 	fmt.Println("Disconnected client from MongoDB!")
 }
@@ -79,7 +83,6 @@ func closeDbConn(client *mongo.Client) {
 func getDbCollectionDetails(DbName string, CollectionName string) (*CollectionDetails, error) {
 	client, err := createDbConn()
 	if err != nil {
-		log.Fatal(err)
 		return nil, err
 	}
 
@@ -91,14 +94,19 @@ func getDbCollectionDetails(DbName string, CollectionName string) (*CollectionDe
 func expireIndexExists(binsCollection *mongo.Collection) (bool, error) {
 	cursor, err := binsCollection.Indexes().List(context.TODO())
 	if err != nil {
-		fmt.Println("Failed to retrieve list of indexes for bins collection")
-		log.Fatal(err)
-		return false, err
+		return false, errors.Join(
+			errors.New("failed to retrieve list of indexes for bins collection"),
+			err,
+		)
 	}
 
 	var results []bson.M
 	if err = cursor.All(context.TODO(), &results); err != nil {
-		panic(err)
+		defer cursor.Close(context.TODO())
+		return false, errors.Join(
+			errors.New("failed to decode list of indexes for bins collection"),
+			err,
+		)
 	}
 	for _, result := range results {
 		if result["expireAfterSeconds"] != nil {
@@ -120,21 +128,20 @@ func createExpirationIndex(binsCollection *mongo.Collection) error {
 	}
 	createIndexResult, err := binsCollection.Indexes().CreateOne(context.Background(), mod)
 	if err != nil {
-		fmt.Println("returned result: ", createIndexResult)
-		fmt.Println("failed to create index: ", err)
-		return err
+		return errors.Join(
+			fmt.Errorf("returned result: %s", createIndexResult),
+			fmt.Errorf("failed to create index: %+v", err),
+		)
 	}
 
-	fmt.Println("Created document expiration index for bins collection")
+	log.Println("Created document expiration index for bins collection")
 	return nil
 }
 
 func CreateNewBin(binId string) error {
 	connDetails, err := getDbCollectionDetails("httpBin", "bins")
 	if err != nil {
-		fmt.Println("Failed to fetch Db collection")
-		log.Fatal(err)
-		return err
+		return errors.Join(fmt.Errorf("failed to fetch Db collection"), err)
 	}
 
 	emptyHttpRequestsSlice := make([]HttpRequest, 0)
@@ -145,9 +152,7 @@ func CreateNewBin(binId string) error {
 	}
 	insertResult, err := connDetails.Collection.InsertOne(context.Background(), newBin)
 	if err != nil {
-		fmt.Println("Failed to insert one record")
-		log.Fatal(err)
-		return err
+		return errors.Join(fmt.Errorf("failed to insert one record"), err)
 	}
 
 	fmt.Println("Inserted a single document: ", insertResult.InsertedID)
@@ -158,9 +163,7 @@ func CreateNewBin(binId string) error {
 func BinIdExists(binId string) (bool, error) {
 	connDetails, err := getDbCollectionDetails("httpBin", "bins")
 	if err != nil {
-		fmt.Println("Failed to fetch Db collection")
-		log.Fatal(err)
-		return false, err
+		return false, errors.Join(fmt.Errorf("failed to fetch Db collection"), err)
 	}
 
 	var result Bin
@@ -171,30 +174,29 @@ func BinIdExists(binId string) (bool, error) {
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
 			binExists = false
+			err = nil
 		} else {
-			log.Fatal(err)
+			err = errors.Join(fmt.Errorf("failed to find and decode bin"), err)
 		}
 	} else {
 		binExists = true
 	}
 
 	closeDbConn(connDetails.Client)
-	return binExists, nil
+	return binExists, err
 }
 
 func AddRequestToBin(binId string, request HttpRequest) error {
 	connDetails, err := getDbCollectionDetails("httpBin", "bins")
 	if err != nil {
-		fmt.Println("Failed to fetch Db collection")
-		log.Fatal(err)
-		return err
+		return errors.Join(fmt.Errorf("failed to fetch Db collection"), err)
 	}
 
 	filter := bson.D{{Key: "binid", Value: binId}}
 	update := bson.M{
 		"$push": bson.M{
 			"requests": bson.M{
-				"hostIp": request.HostIp,
+				"hostIp":   request.HostIp,
 				"recieved": request.Recieved,
 				"contents": request.Contents,
 			},
@@ -203,9 +205,7 @@ func AddRequestToBin(binId string, request HttpRequest) error {
 
 	_, err = connDetails.Collection.UpdateOne(context.TODO(), filter, update)
 	if err != nil {
-		fmt.Printf("error adding request contents to bin: %s", binId)
-		log.Fatal(err)
-		return err
+		return errors.Join(fmt.Errorf("failed to update one record"), err)
 	}
 
 	closeDbConn(connDetails.Client)
@@ -215,15 +215,11 @@ func AddRequestToBin(binId string, request HttpRequest) error {
 func GetBinContents(binId string) (*[]HttpRequest, error) {
 	connDetails, err := getDbCollectionDetails("httpBin", "bins")
 	if err != nil {
-		fmt.Println("Failed to fetch Db collection")
-		log.Fatal(err)
-		return nil, err
+		return nil, errors.Join(fmt.Errorf("failed to fetch Db collection"), err)
 	}
 
 	if err != nil {
-		fmt.Printf("error fetching contents for bin: %s", binId)
-		log.Fatal(err)
-		return nil, err
+		return nil, errors.Join(fmt.Errorf("failed to fetch Db collection"), err)
 	}
 
 	var bin Bin
@@ -232,12 +228,11 @@ func GetBinContents(binId string) (*[]HttpRequest, error) {
 	err = connDetails.Collection.FindOne(context.TODO(), filter).Decode(&bin)
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
-			fmt.Printf("error fetching contents for bin: %s", binId)
-			log.Fatal(err)
+			bin = Bin{}
 		} else {
-			log.Fatal(err)
+			err = errors.Join(fmt.Errorf("failed to find and decode bin"), err)
+			return nil, err
 		}
-		return nil, err
 	}
 
 	log.Printf("Fetched bin %s contents: %+v", bin.BinId, bin.Requests)

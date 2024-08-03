@@ -20,7 +20,7 @@ const binManagerSrvAddr = "bin-manager:65535"
 func ConnectToBinMgmtSrv() *BinMgmtConn {
 	conn, err := grpc.Dial(binManagerSrvAddr, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
-		log.Fatalf("did not connect to: %v", err)
+		log.Fatalf("failed grpc connection: %v", err)
 	}
 
 	client := binManager.NewBinManagerClient(conn)

@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"net/http"
+	"os"
 
 	binManager "bin-manager/pkg"
 
@@ -18,6 +19,8 @@ const (
 )
 
 func main() {
+	log.SetOutput(os.Stdout)
+
 	binManagerSrv := binManager.ConnectToBinMgmtSrv()
 	defer binManagerSrv.CloseConn()
 
