@@ -37,7 +37,6 @@ Go & gRPC - Service Code<br />
 MongoDB - Requests Datastore<br />
 Docker - Deployment<br />
 
-<!-- TODO: Add proper error handling -->
 <!-- TODO: Convert grpc errors into http status codes / responses -->
 <!-- TODO: Add webhook service in TS Node -->
 <!-- TODO: Add unit tests to all services  -->

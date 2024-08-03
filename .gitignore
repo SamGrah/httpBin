@@ -21,3 +21,6 @@ binManagerApp
 apiGatewayApp
 ./bin-manager
 ./api-gateway
+
+# direnv env vars tool
+.envrc
