@@ -1,6 +1,10 @@
 package app
 
-import "app/internal/db"
+import (
+	controllers "app/internal/controller"
+	"app/internal/db"
+	"app/internal/router"
+)
 
 type Deps struct {
 	Db       Db
@@ -17,8 +21,10 @@ type App struct {
 func NewApp() *App {
 	dataService := db.NewDb()
 
-	
-	newServer := NewServer(":8080", nil)
+	controllers := controllers.NewControllers(&controllers.Deps{})
+	router := router.Routes(controllers)
+
+	newServer := NewServer(":8080", router)
 
 	return &App{
 		db:     &dataService,

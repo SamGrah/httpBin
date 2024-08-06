@@ -1,17 +1,27 @@
 package controllers
 
-import "net/http"
+import (
+	"html/template"
+	"log"
+	"net/http"
+)
 
 type Controllers struct{}
 
-type Deps struct {
-	Index *http.HandlerFunc
-}
+type Deps struct{}
 
 func NewControllers(deps *Deps) *Controllers {
 	return &Controllers{}
 }
 
 func (c *Controllers) Index(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Hello, World!"))
+	tmplFile := "index.html"
+
+	t := template.Must(template.ParseFiles(tmplFile))
+
+	w.Header().Set("Content-Type", "text/html")
+	err := t.Execute(w, nil)
+	if err != nil {
+		log.Println(err)
+	}
 }
