@@ -17,6 +17,7 @@ mongo
 .env
 
 # httpBin executables
+/tmp
 app
 ./app
 

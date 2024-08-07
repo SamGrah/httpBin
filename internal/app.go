@@ -24,7 +24,7 @@ func NewApp() *App {
 	controllers := controllers.NewControllers(&controllers.Deps{})
 	router := router.Routes(controllers)
 
-	newServer := NewServer(":8080", router)
+	newServer := NewServer(":3000", router)
 
 	return &App{
 		db:     &dataService,
