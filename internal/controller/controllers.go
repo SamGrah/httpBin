@@ -15,7 +15,7 @@ func NewControllers(deps *Deps) *Controllers {
 }
 
 func (c *Controllers) Index(w http.ResponseWriter, r *http.Request) {
-	tmplFile := "index.html"
+	tmplFile := "internal/templates/index.tmpl"
 
 	t := template.Must(template.ParseFiles(tmplFile))
 
