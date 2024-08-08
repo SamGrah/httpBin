@@ -1,9 +1,11 @@
 package controllers
 
 import (
-	"html/template"
+	"context"
 	"log"
 	"net/http"
+
+	"app/internal/templates"
 )
 
 type Controllers struct{}
@@ -15,13 +17,12 @@ func NewControllers(deps *Deps) *Controllers {
 }
 
 func (c *Controllers) Index(w http.ResponseWriter, r *http.Request) {
-	tmplFile := "internal/templates/index.tmpl"
+	component := templates.Hello("Fred")
 
-	t := template.Must(template.ParseFiles(tmplFile))
-
-	w.Header().Set("Content-Type", "text/html")
-	err := t.Execute(w, nil)
+	err := component.Render(context.Background(), w)
 	if err != nil {
 		log.Println(err)
 	}
+
+	w.Header().Set("Content-Type", "text/html")
 }
