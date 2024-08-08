@@ -1,3 +1,3 @@
 .PHONY: dev
 dev:
-	go build -o ./tmp/app ./cmd/main.go && air
+	templ generate && go build -o ./tmp/app . && air
