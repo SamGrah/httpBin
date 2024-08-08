@@ -1,0 +1,25 @@
+# node & SvelteKit
+node_modules
+
+# Go 
+dist
+
+# dev data 
+mongo
+
+# git
+.gitcredentials
+
+# macOS 
+.DS_Store
+
+# ???
+.env
+
+# httpBin executables
+/tmp
+app
+./app
+
+# direnv env vars tool
+.envrc
