@@ -1,7 +1,7 @@
 package app
 
 import (
-	"app/internal/controllers" 
+	"app/internal/controllers"
 	"app/internal/db"
 	"app/internal/router"
 )

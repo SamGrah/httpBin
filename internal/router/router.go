@@ -23,6 +23,9 @@ func Routes(h Handlers) http.Handler {
 		MaxAge: 300,
 	}))
 
+	fileServer := http.FileServer(http.Dir("./static"))
+	router.Handle("/static/*", http.StripPrefix("/static/", fileServer))
+
 	router.Get("/", h.Index)
 	// router.Post("/new-bin", h.BinMgmtHandler.CreateNewBin)
 	// router.HandleFunc("/bin/{binId}", h.BinMgmtHandler.LogRequest)

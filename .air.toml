@@ -4,12 +4,12 @@ tmp_dir = "tmp"
 
 [build]
   args_bin = []
-  bin = "./tmp/main"
-  cmd = "templ generate && go build -o tmp/app ."
+  bin = "./tmp/app"
+  cmd = "templ generate && go build -o ./tmp/app ./cmd/main.go"
   delay = 1000
   exclude_dir = ["assets", "tmp", "vendor", "testdata"]
   exclude_file = []
-  exclude_regex = ["_test.go, ".*_templ.go"]
+  exclude_regex = [".*_templ.go"]
   exclude_unchanged = false
   follow_symlink = false
   full_bin = ""
@@ -18,14 +18,14 @@ tmp_dir = "tmp"
   include_file = []
   kill_delay = "0s"
   log = "build-errors.log"
-  poll = false
+  poll = false 
   poll_interval = 0
-  post_cmd = []
-  pre_cmd = []
   rerun = false
   rerun_delay = 500
   send_interrupt = false
   stop_on_error = false
+  pre_cmd = []
+  post_cmd = ["kill -15 $(lsof -ti:8080)"]
 
 [color]
   app = ""
