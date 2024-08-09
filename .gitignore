@@ -23,3 +23,6 @@ app
 
 # direnv env vars tool
 .envrc
+
+# tailwind binary
+tailwindcss

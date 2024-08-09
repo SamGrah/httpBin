@@ -17,7 +17,7 @@ func NewControllers(deps *Deps) *Controllers {
 }
 
 func (c *Controllers) Index(w http.ResponseWriter, r *http.Request) {
-	component := templates.Hello("Fred")
+	component := templates.Layout(templates.Home())
 
 	err := component.Render(context.Background(), w)
 	if err != nil {
